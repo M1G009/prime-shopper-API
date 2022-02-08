@@ -1,3 +1,5 @@
+const UserController = require('../controllers/User/UsersController')
+
 const router = new express.Router();
 
 router.post('/user/register', UserController.register)

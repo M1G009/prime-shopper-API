@@ -42,7 +42,7 @@ require('./comman/upload')
 //DATABASE
 mongoose = module.exports = require('mongoose');
 
-mongoose.connect('mongodb://localhost:27017/20_09_2021_PrimeShopper', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('mongodb+srv://mohit:JHrUPabqHjkKhlFt@cluster0.zpihi.mongodb.net/prime_shopper?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true });
 
 const db = mongoose.connection;
 
@@ -65,12 +65,12 @@ ONLINE_USERS = module.exports = [];
 //Routes
 const apiRoutes = require('./routes/api');
 const sellerRoutes = require('./routes/seller');
-const admin = require('./routes/admin');
+// const admin = require('./routes/admin');
 
 
 // api/v1 == PREFIX
 app.use('/api/v1', apiRoutes);
 app.use('/api/v1/seller', sellerRoutes);
-app.use('/admin', admin);
+// app.use('/admin', admin);
 
 module.exports = app;
