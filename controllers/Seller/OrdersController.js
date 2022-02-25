@@ -54,7 +54,6 @@ exports.getOrders = async (req, res) => {
 }
 
 //Get
-
 exports.getOrder = async (req, res) => {
     try {
         const conditions = {

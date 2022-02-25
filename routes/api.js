@@ -1,7 +1,12 @@
 const UserController = require('../controllers/User/UsersController')
+const CategoryController = require('../controllers/CategoriesController')
+const UserProductController = require('../controllers/User/ProductsController')
+const UserPaymentController = require('../controllers/User/PaymentsController')
+const UserOrderController = require('../controllers/User/OrdersController')
 
 const router = new express.Router();
 
+// User Authentication and profile
 router.post('/user/register', UserController.register)
 router.post('/user/login', UserController.doLogin)
 router.post('/user/profile', auth, UserController.getProfile)

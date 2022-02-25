@@ -1,3 +1,8 @@
+const SellerController = require('../controllers/Seller/SellerController')
+const SellerProductController = require('../controllers/Seller/ProductsController')
+const SellerPaymentController = require('../controllers/Seller/PaymentsController')
+const SellerOrderController = require('../controllers/Seller/OrdersController')
+
 const router = new express.Router();
 
 router.post('/register', SellerController.register)
@@ -23,13 +28,12 @@ router.post('/order', auth, SellerOrderController.getOrder)
 router.post('/payments', auth, SellerPaymentController.payments)
 router.post('/payment', auth, SellerPaymentController.payment)
 
-
 //Statistics
 router.post('/statistics', auth, SellerController.Statistics)
 
 async function auth(req, res, next) {
-
     try {
+        console.log("token", token);
         var token = req.header('X-Authentication-token');
         if (!token) throw new Error('Invalid Request');
 

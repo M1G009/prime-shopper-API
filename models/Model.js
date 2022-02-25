@@ -4,8 +4,8 @@ exports._create = (schema, data) => {
 		let create = new schema(data)
 		create.save((err, saved) => {
 			if (err) {
-				console.error(err)
-				resolve(false)
+				// console.error(err)
+				resolve(err)
 			} else {
 				resolve(saved)
 			}

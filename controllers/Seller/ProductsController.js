@@ -2,7 +2,7 @@
 exports.doAdd = async (req, res) => {
     try {
         req.body = _._form(req.body);
-
+        // console.log(req.body);
         var required = ["category", "title", "price", "sellingPrice"]
         var validate = _._checkFields(req.body, required)
         if (validate !== true) throw new Error(validate.message)
@@ -11,7 +11,7 @@ exports.doAdd = async (req, res) => {
         if (req.files && req.files.banner && req.files.banner.length !== 0) {
             req.body.banner = req.files.banner[0].filename;
         }
-
+        console.log(req.files.images);
         if (req.files && req.files.images) {
             var productImages = []
             req.files.images.map(file => {
@@ -41,9 +41,12 @@ exports.doAdd = async (req, res) => {
         if (req.body.productOtherDetails && req.body.productOtherDetails !== '') {
             data.productOtherDetails = JSON.parse(req.body.productOtherDetails)
         }
-
+        console.log(data);
         const addProduct = await Model._create(_Products, data)
-        if (!addProduct) throw new Error('Invalid Arguments')
+        console.log("addProduct", addProduct);
+        if (!addProduct) {
+            throw new Error('Invalid Arguments')
+        }
 
         _.res(res, addProduct, 200);
 
