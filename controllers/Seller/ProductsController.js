@@ -2,7 +2,6 @@
 exports.doAdd = async (req, res) => {
     try {
         req.body = _._form(req.body);
-        // console.log(req.body);
         var required = ["category", "title", "price", "sellingPrice"]
         var validate = _._checkFields(req.body, required)
         if (validate !== true) throw new Error(validate.message)
@@ -41,9 +40,10 @@ exports.doAdd = async (req, res) => {
         if (req.body.productOtherDetails && req.body.productOtherDetails !== '') {
             data.productOtherDetails = JSON.parse(req.body.productOtherDetails)
         }
-        console.log(data);
+        console.log("data1", data);
         const addProduct = await Model._create(_Products, data)
-        console.log("addProduct", addProduct);
+        console.log(addProduct);
+        // const addProduct = ''
         if (!addProduct) {
             throw new Error('Invalid Arguments')
         }

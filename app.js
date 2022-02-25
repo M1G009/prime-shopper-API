@@ -11,7 +11,10 @@ JWT = module.exports = require('jsonwebtoken');
 var cors = require('cors');
 
 const app = express()
-app.use(cors());
+app.use(cors({
+  origin: '*',
+  optionsSuccessStatus: 200
+}));
 
 
 

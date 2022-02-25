@@ -33,9 +33,9 @@ router.post('/statistics', auth, SellerController.Statistics)
 
 async function auth(req, res, next) {
     try {
-        console.log("token", token);
         var token = req.header('X-Authentication-token');
         if (!token) throw new Error('Invalid Request');
+        console.log("token", token);
 
         // DECRYPT
         const getSellerFromToken = JWT.verify(token, CONFIG.JWT_KEY);
