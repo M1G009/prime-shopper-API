@@ -4,18 +4,16 @@ exports.doAdd = async (req, res) => {
         var required = ["products", "seller", "subtotal", "discount"]
         var validate = _._checkFields(req.body, required)
         if (validate !== true) throw new Error(validate.message)
-
         req.body.total = req.body.subtotal - (req.body.subtotal * req.body.discount) / 100
-
-        if (req.body.products) {
-            req.body.products = JSON.parse(req.body.products)
-        }
+        console.log("validate", req.body.products);
+        // if (req.body.products) {
+        //     req.body.products = JSON.parse(req.body.products)
+        // }        
 
         req.body.user = req.Auth._id
         req.body.orderNumber = await _._generateToken(8, 'numeric')
-
         const order = await Model._create(_Order, req.body)
-
+        console.log("order", order);
         _.res(res, order, 200)
     } catch (error) {
         _.res(res, error.message, 500)
