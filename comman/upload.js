@@ -1,7 +1,6 @@
 var multer = require('multer')
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        console.log("file1", file);
         var destination = 'temp';
         if (req.FILE_DESTINATION) {
             destination = req.FILE_DESTINATION;
