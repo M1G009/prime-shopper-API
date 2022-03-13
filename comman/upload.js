@@ -1,6 +1,7 @@
 var multer = require('multer')
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
+        console.log("file1", file);
         var destination = 'temp';
         if (req.FILE_DESTINATION) {
             destination = req.FILE_DESTINATION;
@@ -8,7 +9,8 @@ var storage = multer.diskStorage({
         cb(null, path.join(APP_PATH, path.join('public', destination)))
     },
     filename: function (req, file, cb) {
-        cb(null, file.fieldname + '-' + Date.now() + '.' + _.ext(file.originalname))
+        console.log(file);
+        cb(null, file.fieldname + '-' + Date.now() + file.originalname)
     }
 })
 

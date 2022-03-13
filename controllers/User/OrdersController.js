@@ -16,7 +16,7 @@ exports.doAdd = async (req, res) => {
         console.log("order", order);
         _.res(res, order, 200)
     } catch (error) {
-        _.res(res, error.message, 500)
+        _.res(res, error.message, 404)
     }
 }
 
@@ -58,7 +58,7 @@ exports.Orders = async (req, res) => {
 
         _.res(res, orders, 200)
     } catch (error) {
-        _.res(res, error.message, 500)
+        _.res(res, error.message, 404)
     }
 }
 
@@ -75,7 +75,7 @@ exports.removeOrder = async (req, res) => {
 
         _.res(res, 'Successfully removed', 200)
     } catch (error) {
-        _.res(res, error.message, 500)
+        _.res(res, error.message, 404)
     }
 }
 
@@ -95,6 +95,6 @@ exports.cancelOrder = async (req, res) => {
 
         _.res(res, updatedOrder, 200)
     } catch (error) {
-        _.res(res, error.message, 500)
+        _.res(res, error.message, 404)
     }
 }

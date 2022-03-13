@@ -22,7 +22,7 @@ exports.getCategory = async (req, res) => {
 
         _.res(res, category, 200)
     } catch (error) {
-        _.res(res, error.message, 500)
+        _.res(res, error.message, 404)
     }
 }
 
@@ -55,7 +55,7 @@ exports.getCategories = async (req, res) => {
 
         _.res(res, categories, 200)
     } catch (error) {
-        _.res(res, error.message, 500)
+        _.res(res, error.message, 404)
     }
 }
 
@@ -83,7 +83,7 @@ exports.getSubcategoriesByCategories = async (req, res) => {
 
         _.res(res, getSubcategoryByCategories, 200)
     } catch (error) {
-        _.res(res, error.message, 500)
+        _.res(res, error.message, 404)
     }
 }
 
@@ -111,6 +111,6 @@ exports.getSubcategoriesByCategory = async (req, res) => {
 
         _.res(res, category, 200)
     } catch (error) {
-        _.res(res, error.message, 500)
+        _.res(res, error.message, 404)
     }
 }

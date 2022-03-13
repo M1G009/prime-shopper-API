@@ -34,6 +34,7 @@ app.use(express.static(path.join(__dirname, 'public', 'static'), { maxAge: "365d
 //CONFIG
 CONFIG = module.exports = require('./config/config.json')
 require('./comman/upload')
+require('./comman/csvUpload')
 
 // MAIL
 _Mail = module.exports = require('./mails/mail');
@@ -41,6 +42,7 @@ _Mail = module.exports = require('./mails/mail');
 // COMMON
 _ = module.exports = require('./comman/common')
 require('./comman/upload')
+require('./comman/csvUpload')
 
 //DATABASE
 mongoose = module.exports = require('mongoose');
@@ -68,12 +70,14 @@ ONLINE_USERS = module.exports = [];
 //Routes
 const apiRoutes = require('./routes/api');
 const sellerRoutes = require('./routes/seller');
+const adminRoutes = require('./routes/adminApis');
 // const admin = require('./routes/admin');
 
 
 // api/v1 == PREFIX
 app.use('/api/v1', apiRoutes);
 app.use('/api/v1/seller', sellerRoutes);
+app.use('/api/v1/admin', adminRoutes);
 // app.use('/admin', admin);
 
 module.exports = app;

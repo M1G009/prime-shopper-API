@@ -51,7 +51,7 @@ exports.getProducts = async (req, res) => {
 
         _.res(res, products, 200)
     } catch (error) {
-        _.res(res, error.message, 500)
+        _.res(res, error.message, 404)
     }
 }
 
@@ -83,7 +83,7 @@ exports.getProduct = async (req, res) => {
 
         _.res(res, product, 200)
     } catch (error) {
-        _.res(res, error.message, 500)
+        _.res(res, error.message, 404)
     }
 }
 
@@ -143,7 +143,7 @@ exports.addToCart = async (req, res) => {
 
         _.res(res, updatedCart, 200)
     } catch (error) {
-        _.res(res, error.message, 500)
+        _.res(res, error.message, 404)
     }
 }
 
@@ -180,7 +180,7 @@ exports.cart = async (req, res) => {
 
 
     } catch (error) {
-        _.res(res, error.message, 500)
+        _.res(res, error.message, 404)
     }
 }
 
@@ -196,7 +196,7 @@ exports.removeFromCart = async (req, res) => {
         cart.remove()
         _.res(res, 'Product Successfully Removed From Cart', 200)
     } catch (error) {
-        _.res(res, error.message, 500)
+        _.res(res, error.message, 404)
     }
 }
 
@@ -218,7 +218,7 @@ exports.allProductsRemoveFromCart = async (req, res) => {
 
         _.res(res, 'Successfully Empty cart', 200)
     } catch (error) {
-        _.res(res, error.message, 500)
+        _.res(res, error.message, 404)
     }
 }
 
@@ -252,7 +252,7 @@ exports.addToFavorite = async (req, res) => {
         }
 
     } catch (error) {
-        _.res(res, error.message, 500);
+        _.res(res, error.message, 404);
     }
 }
 
@@ -296,7 +296,7 @@ exports.Favorites = async (req, res) => {
 
         _.res(res, favorites, 200)
     } catch (error) {
-        _.res(res, error.message, 500)
+        _.res(res, error.message, 404)
     }
 }
 
@@ -331,7 +331,7 @@ exports.getProductByCategory = async (req, res) => {
 
         _.res(res, productByCategory, 200)
     } catch (error) {
-        _.res(res, error.message, 500)
+        _.res(res, error.message, 404)
     }
 }
 
@@ -354,6 +354,6 @@ exports.productFormsFiled = async (req, res) => {
         _.res(res, productFormsFiled, 200)
 
     } catch (error) {
-        _.res(res, error.message, 500)
+        _.res(res, error.message, 404)
     }
 }

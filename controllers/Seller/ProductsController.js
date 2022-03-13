@@ -1,3 +1,7 @@
+let fs = require('fs')
+let path = require('path')
+const csv = require("fast-csv");
+
 //ADD
 exports.doAdd = async (req, res) => {
     try {
@@ -6,52 +10,97 @@ exports.doAdd = async (req, res) => {
         var validate = _._checkFields(req.body, required)
         if (validate !== true) throw new Error(validate.message)
 
+        // console.log(req.body);
 
-        if (req.files && req.files.banner && req.files.banner.length !== 0) {
-            req.body.banner = req.files.banner[0].filename;
-        }
-        console.log(req.files.images);
-        if (req.files && req.files.images) {
-            var productImages = []
-            req.files.images.map(file => {
-                productImages.push(file.filename)
-            })
-        }
+        res.status(200).json({
+            message: "success"
+        })
 
-        var discount = (req.body.price - req.body.sellingPrice) / req.body.price * 100;
-        if (discount <= 0) throw new Error('Selling price greater than price,Please enter valid price');
+        // if (req.files && req.files.banner && req.files.banner.length !== 0) {
+        //     req.body.banner = req.files.banner[0].filename;
+        // }
+        // console.log(req.files.images);
+        // if (req.files && req.files.images) {
+        //     var productImages = []
+        //     req.files.images.map(file => {
+        //         productImages.push(file.filename)
+        //     })
+        // }
 
-        const data = {
-            category: req.body.category,
-            seller: req.SellerAuth._id,
-            title: req.body.title,
-            slug: _._convertToSlug(req.body.title),
-            price: req.body.price,
-            sellingPrice: req.body.sellingPrice,
-            discount: discount.toFixed(2),
-            SKU: req.body.SKU,
-            quantity: req.body.quantity,
-            description: req.body.description,
-            features: req.body.features,
-            images: productImages,
-            banner: req.body.banner,
-            status: req.body.status
-        }
-        if (req.body.productOtherDetails && req.body.productOtherDetails !== '') {
-            data.productOtherDetails = JSON.parse(req.body.productOtherDetails)
-        }
-        console.log("data1", data);
-        const addProduct = await Model._create(_Products, data)
-        console.log(addProduct);
-        // const addProduct = ''
-        if (!addProduct) {
-            throw new Error('Invalid Arguments')
-        }
+        // var discount = (req.body.price - req.body.sellingPrice) / req.body.price * 100;
+        // if (discount <= 0) throw new Error('Selling price greater than price,Please enter valid price');
 
-        _.res(res, addProduct, 200);
+        // const data = {
+        //     category: req.body.category,
+        //     seller: req.SellerAuth._id,
+        //     title: req.body.title,
+        //     slug: _._convertToSlug(req.body.title),
+        //     price: req.body.price,
+        //     sellingPrice: req.body.sellingPrice,
+        //     discount: discount.toFixed(2),
+        //     SKU: req.body.SKU,
+        //     quantity: req.body.quantity,
+        //     description: req.body.description,
+        //     features: req.body.features,
+        //     images: productImages,
+        //     banner: req.body.banner,
+        //     status: req.body.status
+        // }
+        // if (req.body.productOtherDetails && req.body.productOtherDetails !== '') {
+        //     data.productOtherDetails = JSON.parse(req.body.productOtherDetails)
+        // }
+        // console.log("data1", data);
+        // const addProduct = await Model._create(_Products, data)
+        // console.log(addProduct);
+        // // const addProduct = ''
+        // if (!addProduct) {
+        //     throw new Error('Invalid Arguments')
+        // }
+
+        // _.res(res, addProduct, 200);
 
     } catch (error) {
-        _.res(res, error.message, 500)
+        _.res(res, error.message, 404)
+    }
+}
+
+//ADD With CSV
+exports.doAddCSV = async (req, res) => {
+    try {
+        if(!req.file){
+            throw new Error("please upload file")
+        }
+        let csvPath = path.join(__dirname, '..', '..', 'public', 'csv', req.file.filename)
+        // console.log(csvPath);
+
+        let csvData = [];
+        fs.createReadStream(csvPath)
+            .pipe(csv.parse({ headers: true }))
+            .on("error", (error) => {
+                throw error.message;
+            })
+            .on("data", (row) => {
+                // console.log("row", row);
+                csvData.push(row);
+            })
+            .on("end", () => {
+                console.log("csvData", csvData);
+                res.status(200).send({
+                    message:
+                        "Uploaded the file successfully: " + req.file.originalname,
+                });
+            });
+
+        // res.status(200).json({
+        //     statusMessage: "success",
+        //     body: "data"
+        // })
+
+    } catch (err) {
+        res.status(404).json({
+            statusMessage: "fail",
+            message: err.message
+        })
     }
 }
 
@@ -116,7 +165,7 @@ exports.doUpdate = async (req, res) => {
         _.res(res, updatedProducts, 200)
 
     } catch (error) {
-        _.res(res, error.message, 500)
+        _.res(res, error.message, 404)
     }
 }
 
@@ -150,7 +199,7 @@ exports.getProduct = async (req, res) => {
 
         _.res(res, product, 200)
     } catch (error) {
-        _.res(res, error.message, 500)
+        _.res(res, error.message, 404)
     }
 }
 
@@ -220,7 +269,7 @@ exports.getProducts = async (req, res) => {
 
         _.res(res, product, 200)
     } catch (error) {
-        _.res(res, error.message, 500)
+        _.res(res, error.message, 404)
     }
 }
 
@@ -240,6 +289,6 @@ exports.removeProduct = async (req, res) => {
         _.res(res, 'Product removed successfully', 200)
 
     } catch (error) {
-        _.res(res, error.message, 500)
+        _.res(res, error.message, 404)
     }
 }

@@ -20,7 +20,8 @@ const SellerSchema = new Schema({
     },
     status : {
         type : String,
-        enum : ['Active','Inactive']
+        enum : ['Active','Inactive'],
+        default : 'Active'
     },  
     createdAt : {
         type : Date,

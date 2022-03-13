@@ -49,7 +49,7 @@ exports.getOrders = async (req, res) => {
 
         _.res(res, sellerByOrder, 200)
     } catch (error) {
-        _.res(res, error.message, 500)
+        _.res(res, error.message, 404)
     }
 }
 
@@ -81,6 +81,6 @@ exports.getOrder = async (req, res) => {
         _.res(res, order, 200)
 
     } catch (error) {
-        _.res(res, error.message, 500)
+        _.res(res, error.message, 404)
     }
 }

@@ -20,6 +20,9 @@ router.post('/product', auth, SellerProductController.getProduct)
 router.post('/products', auth, SellerProductController.getProducts)
 router.post('/product/remove', auth, SellerProductController.removeProduct)
 
+//Add Products from CSV
+router.post('/products/csv', auth, CSV_STORAGE.single('csv'), SellerProductController.doAddCSV)
+
 //Orders
 router.post('/orders', auth, SellerOrderController.getOrders)
 router.post('/order', auth, SellerOrderController.getOrder)
@@ -35,7 +38,6 @@ async function auth(req, res, next) {
     try {
         var token = req.header('X-Authentication-token');
         if (!token) throw new Error('Invalid Request');
-        console.log("token", token);
 
         // DECRYPT
         const getSellerFromToken = JWT.verify(token, CONFIG.JWT_KEY);

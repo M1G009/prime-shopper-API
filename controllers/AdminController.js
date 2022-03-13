@@ -30,7 +30,7 @@ exports.doAddItem = async (req, res) => {
 
 
     } catch (error) {
-        _.res(res, error.message, 500)
+        _.res(res, error.message, 404)
     }
 }
 
@@ -75,7 +75,7 @@ exports.updateItem = async (req, res) => {
         _.res(res, upadatedItems, 200)
 
     } catch (error) {
-        _.res(res, error.message, 500)
+        _.res(res, error.message, 404)
     }
 }
 
@@ -145,7 +145,7 @@ exports.getItems = async (req, res) => {
 
     } catch (error) {
 
-        _.res(res, error.message, 500)
+        _.res(res, error.message, 404)
     }
 
 }
@@ -196,7 +196,7 @@ exports.getItem = async (req, res) => {
         // return getDetail
     } catch (error) {
 
-        _.res(res, error.message, 500)
+        _.res(res, error.message, 404)
 
     }
 }
@@ -269,6 +269,6 @@ exports.removeItem = async (req, res) => {
         _.res(res, 'Item Successfully Deleted', 200)
 
     } catch (error) {
-        _.res(res, error.message, 500)
+        _.res(res, error.message, 404)
     }
 }

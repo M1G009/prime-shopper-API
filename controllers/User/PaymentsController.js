@@ -11,7 +11,7 @@ exports.createPayment = async (req, res) => {
 
         _.res(res, payment, 200)
     } catch (error) {
-        _.res(res, error.message, 500)
+        _.res(res, error.message, 404)
     }
 }
 
@@ -34,7 +34,7 @@ exports.getPayment = async (req, res) => {
 
         _.res(res, payment, 200)
     } catch (error) {
-        _.res(res, error.message, 500)
+        _.res(res, error.message, 404)
     }
 }
 
@@ -76,6 +76,6 @@ exports.getPayments = async (req, res) => {
 
         _.res(res, payments, 200)
     } catch (error) {
-        _.res(res, error.message, 500)
+        _.res(res, error.message, 404)
     }
 }
