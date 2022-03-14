@@ -23,6 +23,9 @@ router.post('/product/remove', auth, SellerProductController.removeProduct)
 //Add Products from CSV
 router.post('/products/csv', auth, CSV_STORAGE.single('csv'), SellerProductController.doAddCSV)
 
+//Category
+router.get('/category', auth, SellerProductController.getSubCategory)
+
 //Orders
 router.post('/orders', auth, SellerOrderController.getOrders)
 router.post('/order', auth, SellerOrderController.getOrder)

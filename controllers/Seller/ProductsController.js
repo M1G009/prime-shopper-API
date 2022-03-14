@@ -1,6 +1,7 @@
 let fs = require('fs')
 let path = require('path')
 const csv = require("fast-csv");
+const Categories = require('../../models/schemas/DynamicCategoriesSchema');
 
 //ADD
 exports.doAdd = async (req, res) => {
@@ -290,5 +291,23 @@ exports.removeProduct = async (req, res) => {
 
     } catch (error) {
         _.res(res, error.message, 404)
+    }
+}
+
+exports.getSubCategory = async (req, res) => {
+    try {
+
+        let category = await Categories.find();
+
+        res.status(200).json({
+            status: 'success',
+            data: category
+        });
+
+    } catch (err) {
+        res.status(404).json({
+            status: 'fail',
+            message: err.message
+        });
     }
 }
