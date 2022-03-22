@@ -3,12 +3,17 @@ const Schema = mongoose.Schema
 const ProductsSchema = new Schema({
     category: {
         type: Schema.Types.ObjectId,
-        ref: 'Categories'
+        ref: 'AllCategories'
+    },
+    parentId: {
+        type: Schema.Types.ObjectId,
+        ref: 'AllCategories'
     },
     seller: {
         type: Schema.Types.ObjectId,
         ref: 'Sellers',
-        default: null
+        default: null,
+        required: true
     },
     title: {
         type: String,
@@ -20,18 +25,57 @@ const ProductsSchema = new Schema({
     },
     images: [],
     price: {
-        type: String,
-        required: true
+        price_in_india: Number,
+        price_in_unitedkingdom: Number,
+        price_in_france: Number,
+        price_in_germany: Number,
+        price_in_netherland: Number,
+        price_in_switzerland: Number,
+        price_in_italy: Number,
+        price_in_canada: Number,
+        price_in_unitedstate: Number,
     },
     sellingPrice: {
-        type: String,
-        required: true
+        selling_price_in_india: Number,
+        selling_price_in_unitedkingdom: Number,
+        selling_price_in_france: Number,
+        selling_price_in_germany: Number,
+        selling_price_in_netherland: Number,
+        selling_price_in_switzerland: Number,
+        selling_price_in_italy: Number,
+        selling_price_in_canada: Number,
+        selling_price_in_unitedstate: Number,
     },
     discount: {
-        type: String,
-        default: ''
+        discount_price_in_india: {
+            type: Number
+        },
+        discount_price_in_unitedkingdom: {
+            type: Number
+        },
+        discount_price_in_france: {
+            type: Number
+        },
+        discount_price_in_germany: {
+            type: Number
+        },
+        discount_price_in_netherland: {
+            type: Number
+        },
+        discount_price_in_switzerland: {
+            type: Number
+        },
+        discount_price_in_italy: {
+            type: Number
+        },
+        discount_price_in_canada: {
+            type: Number
+        },
+        discount_price_in_unitedstate: {
+            type: Number
+        },
     },
-    SKU: {
+    sku: {
         type: String,
         required: true,
         unique: true
