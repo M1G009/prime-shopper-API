@@ -21,7 +21,7 @@ router.post('/products', auth, SellerProductController.getProducts)
 router.post('/product/remove', auth, SellerProductController.removeProduct)
 
 //Add Products from CSV
-router.post('/product/getcsv', auth, SellerProductController.downloadCSV)
+router.get('/product/getcsv', auth, SellerProductController.downloadCSV)
 router.post('/products/csv', auth, CSV_STORAGE.single('csv'), SellerProductController.doAddCSV)
 
 //Category

@@ -13,11 +13,11 @@ const ProductsSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Sellers',
         default: null,
-        required: true
+        required: [true, "Seller is require"]
     },
     title: {
         type: String,
-        required: true
+        required: [true, "Title is require"]
     },
     banner: {
         type: String,
@@ -77,12 +77,13 @@ const ProductsSchema = new Schema({
     },
     sku: {
         type: String,
-        required: true,
-        unique: true
+        required: [true, "SKU is require"],
+        unique: [true, "SKU must be unique"]
     },
     quantity: {
         type: Number,
-        default: 1
+        default: 0,
+        min: [0, "Quantity should be more than or equal to 0"]
     },
     description: {
         type: String,
@@ -104,7 +105,7 @@ const ProductsSchema = new Schema({
     },
     slug: {
         type: String,
-        unique: true
+        unique: [true, "slug must be unique"]
     },
     productOtherDetails: [],
     createdAt: {
