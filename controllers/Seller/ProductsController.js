@@ -13,7 +13,6 @@ exports.doAdd = async (req, res) => {
         var validate = _._checkFields(req.body, required)
         if (validate !== true) throw new Error(validate.message)
 
-        // console.log(req.body);
 
         res.status(200).json({
             message: "success"
@@ -22,7 +21,6 @@ exports.doAdd = async (req, res) => {
         // if (req.files && req.files.banner && req.files.banner.length !== 0) {
         //     req.body.banner = req.files.banner[0].filename;
         // }
-        // console.log(req.files.images);
         // if (req.files && req.files.images) {
         //     var productImages = []
         //     req.files.images.map(file => {
@@ -52,9 +50,7 @@ exports.doAdd = async (req, res) => {
         // if (req.body.productOtherDetails && req.body.productOtherDetails !== '') {
         //     data.productOtherDetails = JSON.parse(req.body.productOtherDetails)
         // }
-        // console.log("data1", data);
         // const addProduct = await Model._create(_Products, data)
-        // console.log(addProduct);
         // // const addProduct = ''
         // if (!addProduct) {
         //     throw new Error('Invalid Arguments')
@@ -70,13 +66,11 @@ exports.doAdd = async (req, res) => {
 //DOWNLOAD CSV
 exports.downloadCSV = async (req, res) => {
     try {
-        // console.log(req.body);
         var data = [
-            { title: 'Title', SKU: 'SKU', banner: 'Banner', quantity: 'Quantity', price_in_india: 'Price In India', selling_price_in_india: 'Selling Price In India', price_in_unitedkingdom: 'Price In United Kingdom', selling_price_in_unitedkingdom: 'Selling Price In United Kingdom', price_in_france: 'Price In France', selling_price_in_france: 'Selling Price In France', price_in_germany: 'Price In Germany', selling_price_in_germany: 'Selling Price In Germany', price_in_netherland: 'Price In Netherland', selling_price_in_netherland: 'Selling Price In Netherland', price_in_switzerland: 'Price In Switzerland', selling_price_in_switzerland: 'Selling Price In Switzerland', price_in_italy: 'Price In Italy', selling_price_in_italy: 'Selling Price In Italy', price_in_canada: 'Price In Canada', selling_price_in_canada: 'Selling Price In Canada', price_in_unitedstate: 'Price In United State', selling_price_in_unitedstate: 'Selling Price In United State', description: 'Description', features: 'Features', image1: 'Other Image Url 1', image2: 'Other Image Url 2', image3: 'Other Image Url 3', image4: 'Other Image Url 4', image5: 'Other Image Url 5', image6: 'Other Image Url 6', image7: 'Other Image Url 7', image8: 'Other Image Url 8' },
+            { title: 'Title', sku: 'SKU', banner: 'Banner', quantity: 'Quantity', price_in_india: 'Price In India', selling_price_in_india: 'Selling Price In India', price_in_unitedkingdom: 'Price In United Kingdom', selling_price_in_unitedkingdom: 'Selling Price In United Kingdom', price_in_france: 'Price In France', selling_price_in_france: 'Selling Price In France', price_in_germany: 'Price In Germany', selling_price_in_germany: 'Selling Price In Germany', price_in_netherland: 'Price In Netherland', selling_price_in_netherland: 'Selling Price In Netherland', price_in_switzerland: 'Price In Switzerland', selling_price_in_switzerland: 'Selling Price In Switzerland', price_in_italy: 'Price In Italy', selling_price_in_italy: 'Selling Price In Italy', price_in_canada: 'Price In Canada', selling_price_in_canada: 'Selling Price In Canada', price_in_unitedstate: 'Price In United State', selling_price_in_unitedstate: 'Selling Price In United State', description: 'Description', features: 'Features', image1: 'Other Image Url 1', image2: 'Other Image Url 2', image3: 'Other Image Url 3', image4: 'Other Image Url 4', image5: 'Other Image Url 5', image6: 'Other Image Url 6', image7: 'Other Image Url 7', image8: 'Other Image Url 8' },
         ]
 
         let csvPath = path.join(__dirname, '..', '..', 'public', 'csv', 'Add_Products.csv')
-        // console.log(csvPath);
         const ws = fs.createWriteStream(csvPath)
 
         csv
@@ -109,13 +103,11 @@ exports.doAddCSV = async (req, res) => {
         }
         let csvPath = path.join(__dirname, '..', '..', 'public', 'csv', req.file.filename);
 
-        console.log("body", req.body);
 
         let csvData = [];
         await fs.createReadStream(csvPath)
             .pipe(csv.parse({ headers: true }))
             .on("data", (row) => {
-                // console.log("row", req.SellerAuth._id);
                 let rowData = {};
                 rowData.images = []
                 rowData.category = req.body.id
@@ -154,7 +146,6 @@ exports.doAddCSV = async (req, res) => {
             .on("end", async () => {
                 try {
                     csvData.splice(0, 1)
-                    // console.log("csvData", csvData);
                     let error = false;
                     csvData.map(el => {
                         if (el.price && el.sellingPrice) {
@@ -180,7 +171,6 @@ exports.doAddCSV = async (req, res) => {
                             message: error,
                         });
                     } else {
-
                         let newProducts = await Product.insertMany(csvData)
                         res.status(200).send({
                             data: newProducts,
@@ -361,7 +351,6 @@ exports.getProducts = async (req, res) => {
             })
         }
 
-        // console.log(options);
         var search = new RegExp(req.body.search, 'gi');
         if (req.body.search && req.body.search !== '') {
             condition['$where'] = `function() { return this.title.match(${search}) != null || this.price.toString().match(${search}) != null || 
