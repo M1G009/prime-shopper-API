@@ -30,6 +30,7 @@ router.get('/category', auth, SellerProductController.getSubCategory)
 //Orders
 router.post('/orders', auth, SellerOrderController.getOrders)
 router.post('/order', auth, SellerOrderController.getOrder)
+router.post('/order/update', auth, SellerOrderController.updateOrder)
 
 //Payments
 router.post('/payments', auth, SellerPaymentController.payments)

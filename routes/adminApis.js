@@ -1,4 +1,5 @@
 const CategoriesController = require('../controllers/Admin/CategoriesController')
+const CourierController = require('../controllers/Admin/Courier')
 
 const router = new express.Router();
 
@@ -17,6 +18,11 @@ router.get('/categories/:id', CategoriesController.getCategory)
 router.post('/category/add', IMAGE_STORAGE.fields([{ name: 'banner', maxCount: 1 }]), CategoriesController.addCategory)
 router.post('/category/update', CategoriesController.updateCategory)
 router.post('/category/delete', CategoriesController.deleteCategory)
+
+// Courier
+router.get('/couriers', CourierController.getAllCouriors)
+router.post('/courier/add', CourierController.addCourior)
+router.post('/courier/delete', CourierController.deleteCourior)
 
 
 // async function auth(req, res, next) {

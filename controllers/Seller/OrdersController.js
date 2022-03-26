@@ -1,3 +1,5 @@
+const Order = require('./../../models/schemas/OrdersSchema');
+
 //Gets
 exports.getOrders = async (req, res) => {
     try {
@@ -79,6 +81,21 @@ exports.getOrder = async (req, res) => {
         if (!order) throw new Error('No Orders')
 
         _.res(res, order, 200)
+
+    } catch (error) {
+        _.res(res, error.message, 404)
+    }
+}
+
+//Update Order
+exports.updateOrder = async (req, res) => {
+    try {
+        const order = await Order.findByIdAndUpdate(req.body.order, req.body)
+
+        res.status(200).json({
+            status: 'success',
+            data: order
+        });
 
     } catch (error) {
         _.res(res, error.message, 404)

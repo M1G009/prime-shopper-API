@@ -51,6 +51,13 @@ const OrdersSchema = new Schema({
         enum: ['Pending', 'Unshipped', 'Sent', 'Cancelled'],
         default: 'Pending'
     },
+    courier: {
+        id: {
+            type: Schema.Types.ObjectId,
+            ref : 'Courier'
+        },
+        trackingId: String
+    },
     createdAt: {
         type: Date,
         default: Date.now
