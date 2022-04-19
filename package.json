@@ -17,6 +17,7 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "fast-csv": "^4.3.6",
+    "fs-extra": "^10.1.0",
     "handlebars": "^4.7.7",
     "handlebars-layouts": "^3.1.4",
     "jsonwebtoken": "^8.5.1",

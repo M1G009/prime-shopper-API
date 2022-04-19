@@ -16,7 +16,7 @@ const router = new express.Router();
 router.get('/categories', CategoriesController.getCategories)
 router.get('/categories/:id', CategoriesController.getCategory)
 router.post('/category/add', IMAGE_STORAGE.fields([{ name: 'banner', maxCount: 1 }]), CategoriesController.addCategory)
-router.post('/category/update', CategoriesController.updateCategory)
+router.post('/category/update',IMAGE_STORAGE.fields([{ name: 'banner', maxCount: 1 }]),  CategoriesController.updateCategory)
 router.post('/category/delete', CategoriesController.deleteCategory)
 
 // Courier
