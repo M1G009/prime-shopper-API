@@ -6,6 +6,11 @@ const CartSchema = new Schema({
         ref : 'Products',
         required : true
     }, 
+    variations : {
+        type : Schema.Types.ObjectId,
+        ref : 'Products',
+        required : true
+    }, 
     quantity : {
         type : Number,
         default : 1

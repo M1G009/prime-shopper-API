@@ -1,4 +1,84 @@
 const Schema = mongoose.Schema;
+const childSchema = new Schema({
+  banner: {
+    type: String,
+    default: "",
+    required: [true, "Please add product banner"],
+  },
+  parent_sku: String,
+  variation1: {
+    var_title: String,
+    value: String,
+  },
+  variation2: {
+    var_title: String,
+    value: String,
+  },
+  quantity: {
+    type: Number,
+    default: 0,
+    min: [0, "Quantity should be more than or equal to 0"],
+  },
+  images: [String],
+  Product_video_url: String,
+  dimensions: {
+    item_length: String,
+    item_width: String,
+    item_height: String,
+    item_weight: String,
+  },
+  price: {
+    price_in_india: Number,
+    price_in_unitedkingdom: Number,
+    price_in_france: Number,
+    price_in_germany: Number,
+    price_in_netherland: Number,
+    price_in_switzerland: Number,
+    price_in_italy: Number,
+    price_in_canada: Number,
+    price_in_unitedstate: Number,
+  },
+  sellingPrice: {
+    selling_price_in_india: Number,
+    selling_price_in_unitedkingdom: Number,
+    selling_price_in_france: Number,
+    selling_price_in_germany: Number,
+    selling_price_in_netherland: Number,
+    selling_price_in_switzerland: Number,
+    selling_price_in_italy: Number,
+    selling_price_in_canada: Number,
+    selling_price_in_unitedstate: Number,
+  },
+  discount: {
+    discount_price_in_india: {
+      type: Number,
+    },
+    discount_price_in_unitedkingdom: {
+      type: Number,
+    },
+    discount_price_in_france: {
+      type: Number,
+    },
+    discount_price_in_germany: {
+      type: Number,
+    },
+    discount_price_in_netherland: {
+      type: Number,
+    },
+    discount_price_in_switzerland: {
+      type: Number,
+    },
+    discount_price_in_italy: {
+      type: Number,
+    },
+    discount_price_in_canada: {
+      type: Number,
+    },
+    discount_price_in_unitedstate: {
+      type: Number,
+    },
+  },
+});
 
 const ProductsSchema = new Schema({
   category: {
@@ -111,106 +191,23 @@ const ProductsSchema = new Schema({
   legal_disclaimer: {
     type: String,
   },
-  variations: {
-    variations1: {
-      var_type: {
-        type: String,
-        enum: ["Variation", "Accessory",''],
-      },
-      var_theme_type: String,
-      data: [String],
+  variations1: {
+    var_type: {
+      type: String,
+      enum: ["Variation", "Accessory", ""],
     },
-    variations2: {
-      var_type: {
-        type: String,
-        enum: ["Variation", "Accessory", ''],
-      },
-      var_theme_type: String,
-      data: [String],
-    },
-    children: [
-      {
-        banner: {
-          type: String,
-          default: "",
-          required: [true, "Please add product banner"]
-        },
-        parent_sku: String,
-        variation1: {
-          var_title: String,
-          value: String,
-        },
-        variation2: {
-          var_title: String,
-          value: String,
-        },
-        quantity: {
-          type: Number,
-          default: 0,
-          min: [0, "Quantity should be more than or equal to 0"],
-        },
-        images: [String],
-        Product_video_url: String,
-        dimensions: {
-          item_length: String,
-          item_width: String,
-          item_height: String,
-          item_weight: String,
-        },
-        price: {
-          price_in_india: Number,
-          price_in_unitedkingdom: Number,
-          price_in_france: Number,
-          price_in_germany: Number,
-          price_in_netherland: Number,
-          price_in_switzerland: Number,
-          price_in_italy: Number,
-          price_in_canada: Number,
-          price_in_unitedstate: Number,
-        },
-        sellingPrice: {
-          selling_price_in_india: Number,
-          selling_price_in_unitedkingdom: Number,
-          selling_price_in_france: Number,
-          selling_price_in_germany: Number,
-          selling_price_in_netherland: Number,
-          selling_price_in_switzerland: Number,
-          selling_price_in_italy: Number,
-          selling_price_in_canada: Number,
-          selling_price_in_unitedstate: Number,
-        },
-        discount: {
-          discount_price_in_india: {
-            type: Number,
-          },
-          discount_price_in_unitedkingdom: {
-            type: Number,
-          },
-          discount_price_in_france: {
-            type: Number,
-          },
-          discount_price_in_germany: {
-            type: Number,
-          },
-          discount_price_in_netherland: {
-            type: Number,
-          },
-          discount_price_in_switzerland: {
-            type: Number,
-          },
-          discount_price_in_italy: {
-            type: Number,
-          },
-          discount_price_in_canada: {
-            type: Number,
-          },
-          discount_price_in_unitedstate: {
-            type: Number,
-          },
-        },
-      },
-    ],
+    var_theme_type: String,
+    data: [String],
   },
+  variations2: {
+    var_type: {
+      type: String,
+      enum: ["Variation", "Accessory", ""],
+    },
+    var_theme_type: String,
+    data: [String],
+  },
+  variations: [childSchema],
   createdAt: {
     type: Date,
     default: Date.now(),

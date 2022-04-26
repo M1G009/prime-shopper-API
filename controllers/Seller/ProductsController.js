@@ -184,19 +184,17 @@ exports.doAddCSV = async (req, res) => {
         newObject["productStatus"] = "Active";
         newObject["material_type_free"] = [];
         newObject["bullet_point"] = [];
-        newObject["variations"] = {
-          variations1: {
-            var_type: "",
-            var_theme_type: "",
-            data: [],
-          },
-          variations2: {
-            var_type: "",
-            var_theme_type: "",
-            data: [],
-          },
-          children: [],
+        newObject["variations1"] = {
+          var_type: "",
+          var_theme_type: "",
+          data: [],
         };
+        newObject["variations2"] = {
+          var_type: "",
+          var_theme_type: "",
+          data: [],
+        };
+        newObject["variations"] = [];
         let childrenObject = {};
         childrenObject["images"] = [];
         childrenObject["dimensions"] = {};
@@ -270,7 +268,7 @@ exports.doAddCSV = async (req, res) => {
           newObject["material_composition"] = el.material_composition;
         }
         if (el.is_waterproof) {
-          newObject["is_waterproof"] = el.is_waterproof;
+          newObject["is_waterproof"] = (el.is_waterproof == 'true');
         }
         if (el.manufacturer) {
           newObject["manufacturer"] = el.manufacturer;
@@ -318,7 +316,7 @@ exports.doAddCSV = async (req, res) => {
             var_theme_type: el.variation_theme1,
             data: [el.variation_Value1],
           };
-          newObject["variations"].variations1 = variations1;
+          newObject["variations1"] = variations1;
           childrenObject["variation1"] = {
             var_title: el.variation_theme1,
             value: el.variation_Value1,
@@ -334,7 +332,7 @@ exports.doAddCSV = async (req, res) => {
             var_theme_type: el.variation_theme2,
             data: [el.variation_Value2],
           };
-          newObject["variations"].variations2 = variations2;
+          newObject["variations2"] = variations2;
           childrenObject["variation2"] = {
             var_title: el.variation_theme2,
             value: el.variation_Value2,
@@ -474,7 +472,7 @@ exports.doAddCSV = async (req, res) => {
           childrenObject["banner"] = el.banner;
         }
 
-        newObject["variations"].children.push(childrenObject);
+        newObject["variations"].push(childrenObject);
 
         newProducts.push(newObject);
       } else if (el.parent_child == "Child") {
@@ -487,7 +485,7 @@ exports.doAddCSV = async (req, res) => {
         childrenObject["sellingPrice"] = {};
         childrenObject["discount"] = {};
 
-        if(el.variation_theme1 != parentEle["variations"].variations1.var_theme_type || el.variation_theme2 != parentEle["variations"].variations2.var_theme_type){
+        if(el.variation_theme1 != parentEle["variations1"].var_theme_type || el.variation_theme2 != parentEle["variations2"].var_theme_type){
           return false
         }
         if (el.banner) {
@@ -497,9 +495,9 @@ exports.doAddCSV = async (req, res) => {
           el.variation_theme1 &&
           el.variation_Value1
         ) {
-          let checkVariation = parentEle["variations"].variations1.data.includes(el.variation_Value1)
+          let checkVariation = parentEle["variations1"].data.includes(el.variation_Value1)
           if(!checkVariation){
-            parentEle["variations"].variations1.data.push(el.variation_Value1)
+            parentEle["variations1"].data.push(el.variation_Value1)
           }
           childrenObject["variation1"] = {
             var_title: el.variation_theme1,
@@ -510,9 +508,9 @@ exports.doAddCSV = async (req, res) => {
           el.variation_theme2 &&
           el.variation_Value2
         ) {
-          let checkVariation = parentEle["variations"].variations2.data.includes(el.variation_Value2)
+          let checkVariation = parentEle["variations2"].data.includes(el.variation_Value2)
           if(!checkVariation){
-            parentEle["variations"].variations2.data.push(el.variation_Value2)
+            parentEle["variations2"].data.push(el.variation_Value2)
           }
           childrenObject["variation2"] = {
             var_title: el.variation_theme2,
@@ -655,7 +653,7 @@ exports.doAddCSV = async (req, res) => {
         }
 
         if(newProducts.length){
-          parentEle.variations.children.push(childrenObject)
+          parentEle.variations.push(childrenObject)
         }
 
       }
@@ -666,8 +664,7 @@ exports.doAddCSV = async (req, res) => {
 
     res.status(200).json({
       statusMessage: "success",
-      body: xlsxData,
-      newData: addNewProducts,
+      body: addNewProducts
     });
   } catch (err) {
     res.status(404).json({
