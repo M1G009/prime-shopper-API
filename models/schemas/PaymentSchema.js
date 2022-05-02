@@ -1,19 +1,14 @@
 const Schema = mongoose.Schema
-
+// multiple seller, order (remove), billing address
 const PaymentSchema = new Schema({
     user : {
         type : Schema.Types.ObjectId,
         ref : 'Users'
     },
-    seller : {
+    seller : [{
         type : Schema.Types.ObjectId,
         ref : 'Sellers'
-    },
-    order : {
-        type : Schema.Types.ObjectId,
-        ref : 'Orders',
-        required : true,
-    },
+    }],
     paymentID : {
         type : String,
         default : ''
@@ -25,7 +20,7 @@ const PaymentSchema = new Schema({
     },
     paymentType : {
         type : String,
-        enum : ['COD','Stripe'],
+        enum : ['COD','Stripe', 'Razorpay'],
         required : true,
     },
     paymentToken : {
@@ -36,18 +31,41 @@ const PaymentSchema = new Schema({
         type : String,
         default : ''
     },
+    billingAddress : {
+        address_city : {
+            type: String,
+            required: true
+        },
+        address_country : {
+            type: String,
+            required: true
+        },
+        address_line1 : {
+            type: String,
+            required: true
+        },
+        address_line2 : String,
+        address_state : {
+            type: String,
+            required: true
+        },
+        address_zip : {
+            type: String,
+            required: true
+        },
+    },
     paymentDetails : {},
     invoiceNumber : {
-        type : Number,
+        type : String,
         required : true,
     },
     amount : {
         type : Number,
-        required : true,
+        required : true
     },
-    discount : {
+    sellingAmount : {
         type : Number,
-        default : 0
+        required : true
     },
     createdAt: {
         type: Date,

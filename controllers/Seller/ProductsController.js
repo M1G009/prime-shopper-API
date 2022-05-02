@@ -201,6 +201,14 @@ exports.doAddCSV = async (req, res) => {
         childrenObject["price"] = {};
         childrenObject["sellingPrice"] = {};
         childrenObject["discount"] = {};
+        childrenObject["variation1"] = {
+          var_title: '',
+          value: '',
+        };
+        childrenObject["variation2"] = {
+          var_title: '',
+          value: '',
+        };
 
         if (el.feed_product_type) {
           newObject["feed_product_type"] = el.feed_product_type;

@@ -1,5 +1,5 @@
 const Schema = mongoose.Schema
-
+// shipping address, payment id, Single Single Order
 const OrdersSchema = new Schema({
     user: {
         type: Schema.Types.ObjectId,
@@ -23,10 +23,10 @@ const OrdersSchema = new Schema({
             },
         }
     ],
-    seller : {
-        type: Schema.Types.ObjectId,
+    seller : [{
+        type : Schema.Types.ObjectId,
         ref : 'Sellers'
-    },
+    }],
     orderNumber : {
         type: String,
     },
@@ -34,13 +34,9 @@ const OrdersSchema = new Schema({
         type: String,
         default: ''
     },
-    subtotal: {
+    sellingAmount: {
         type: String,
         required: true,
-    },
-    discount: {
-        type: String,
-        default: ''
     },
     total: {
         type: Number,
@@ -57,6 +53,33 @@ const OrdersSchema = new Schema({
             ref : 'Courier'
         },
         trackingId: String
+    },
+    payment_id: {
+        type : Schema.Types.ObjectId,
+        ref : 'Payments'
+    },
+    shippingAddress : {
+        address_city : {
+            type: String,
+            required: true
+        },
+        address_country : {
+            type: String,
+            required: true
+        },
+        address_line1 : {
+            type: String,
+            required: true
+        },
+        address_line2 : String,
+        address_state : {
+            type: String,
+            required: true
+        },
+        address_zip : {
+            type: String,
+            required: true
+        },
     },
     createdAt: {
         type: Date,

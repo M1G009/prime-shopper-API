@@ -27,9 +27,11 @@
     "nodemon": "^2.0.12",
     "path": "^0.12.7",
     "randomstring": "^1.2.1",
+    "razorpay": "^2.8.1",
     "slugify": "^1.6.5",
     "socket.io": "^4.2.0",
     "socket.io-client": "^4.2.0",
+    "stripe": "^8.219.0",
     "tslib": "^2.3.1",
     "xlsx": "^0.18.5"
   }

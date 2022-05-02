@@ -176,7 +176,7 @@ exports.cart = async (req, res) => {
       },
     ];
     const cart = await Model._find(_Cart, conditions, options);
-
+    console.log(cart);
     if (!cart) throw new Error("Cart Is Empty");
     let resCart = cart.map((el, index) => {
       let copyEl = el;
