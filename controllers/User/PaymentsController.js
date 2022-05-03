@@ -1,3 +1,4 @@
+const Orders =  require('../../models/schemas/OrdersSchema')
 const Razorpay = require("razorpay");
 
 var Publishable_Key =
@@ -33,21 +34,12 @@ exports.createPayment = async (req, res) => {
     let billingData = userData.billingAddress;
     let cartData = userData.cartData;
     let sellers = [];
-    let productsData = [];
 
     cartData.map((el) => {
       let seller = el.product.seller._id;
       if (!sellers.includes(seller)) {
         sellers.push(seller);
       }
-
-      let product = {
-        product: el.product.id,
-        quantity: el.quantity,
-        price: el.product.variations[0].sellingPrice.selling_price_in_india,
-      };
-
-      productsData.push(product)
     });
 
     var options = {
@@ -97,20 +89,37 @@ exports.createPayment = async (req, res) => {
       // console.log("payment", payment);
       if (!payment) throw new Error("No Payment found");
 
-      let orderData = {
-        user: req.Auth._id,
-        products: productsData,
-        seller: sellers,
-        orderNumber: order.id,
-        note: "",
-        sellingAmount: paymentData.sellingTotal,
-        total: paymentData.total,
-        status: "Pending",
-        payment_id: payment._id,
-        shippingAddress: billingAddressData,
-      };
+      let ordersData = [];
 
-      const orderObj = await Model._create(_Order, orderData);
+      cartData.map((el) => {
+        let seller = el.product.seller._id;
+
+        let product = {
+          product: el.product.id,
+          quantity: el.quantity,
+          price: el.product.variations[0].sellingPrice.selling_price_in_india,
+        };
+
+        let orderData = {
+          user: req.Auth._id,
+          product: product,
+          seller: seller,
+          orderNumber: order.id,
+          note: "",
+          sellingAmount: el.quantity * el.product.variations[0].sellingPrice.selling_price_in_india,
+          total: el.quantity * el.product.variations[0].price.price_in_india,
+          status: "Pending",
+          payment_id: payment._id,
+          shippingAddress: billingAddressData,
+        };
+
+        ordersData.push(orderData)
+        
+      });
+      
+      // console.log(ordersData);
+
+      const orderObj = await Orders.create(ordersData)
       // console.log("payment", orderObj);
       if (!payment) throw new Error("No Order Proceed");
       _.res(res, {payment, orderObj}, 200);

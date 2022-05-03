@@ -6,27 +6,25 @@ const OrdersSchema = new Schema({
         ref: 'Users',
         required: true,
     },
-    products: [
-        {
-            product: {
-                type: Schema.Types.ObjectId,
-                ref: 'Products',
-                required: true
-            },
-            quantity: {
-                type: Number,
-                default: 1
-            },
-            price: {
-                type: Number,
-                required: true
-            },
-        }
-    ],
-    seller : [{
+    product: {
+        product: {
+            type: Schema.Types.ObjectId,
+            ref: 'Products',
+            required: true
+        },
+        quantity: {
+            type: Number,
+            default: 1
+        },
+        price: {
+            type: Number,
+            required: true
+        },
+    },
+    seller : {
         type : Schema.Types.ObjectId,
         ref : 'Sellers'
-    }],
+    },
     orderNumber : {
         type: String,
     },

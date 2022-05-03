@@ -120,7 +120,7 @@ const ProductsSchema = new Schema({
   },
   slug: {
     type: String,
-    unique: [true, "slug must be unique"],
+    // unique: [true, "slug must be unique"],
   },
   productOtherDetails: [],
   feed_product_type: {
