@@ -14,8 +14,7 @@ exports.getOrders = async (req, res) => {
         const options = [
             {
                 populate: {
-                    path: 'products',
-                    select: 'title images banner'
+                    path: 'product.product',
                 }
             },
             {
@@ -25,11 +24,16 @@ exports.getOrders = async (req, res) => {
                 }
             },
             {
-                limit: 12,
+                populate: {
+                    path: 'courier.id',
+                }
             },
-            {
-                skip: req.body.skip ? req.body.skip : 0
-            }
+            // {
+            //     limit: 12,
+            // },
+            // {
+            //     skip: req.body.skip ? req.body.skip : 0
+            // }
         ]
 
         if (req.body.sort && req.body.sort !== '') {
@@ -90,11 +94,43 @@ exports.getOrder = async (req, res) => {
 //Update Order
 exports.updateOrder = async (req, res) => {
     try {
-        const order = await Order.findByIdAndUpdate(req.body.order, req.body)
+        // console.log(req.body.orderId, req.body.couriorId, req.body.trackingId);
+        if(!req.body.orderId || !req.body.couriorId || !req.body.trackingId){
+            throw Error('Please enter valid values')
+        }
+
+        const order = await Order.findByIdAndUpdate(req.body.orderId, {courier: {id: req.body.couriorId, trackingId: req.body.trackingId}, status: 'Sent'})
+
+        const options = [
+            {
+                populate: {
+                    path: 'product.product',
+                }
+            },
+            {
+                populate: {
+                    path: 'seller',
+                    select: 'name email phoneNumber'
+                }
+            },
+            {
+                populate: {
+                    path: 'courier.id',
+                }
+            },
+            // {
+            //     limit: 12,
+            // },
+            // {
+            //     skip: req.body.skip ? req.body.skip : 0
+            // }
+        ]
+
+        const orders = await Order.find().populate(options)
 
         res.status(200).json({
             status: 'success',
-            data: order
+            data: orders
         });
 
     } catch (error) {

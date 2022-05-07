@@ -1,3 +1,5 @@
+const CartModal = require('../../models/schemas/CartSchema')
+
 exports.getProducts = async (req, res) => {
   try {
     var condition = {};
@@ -93,19 +95,21 @@ exports.addToCart = async (req, res) => {
     const conditions = {
       product: req.body.product,
       user: req.Auth._id,
-      variations: req.body.variations
+      variations: req.body.variations,
     };
+    let increment = req.body.increment;
     const carts = await Model._findOne(_Cart, conditions, {}, false);
 
     if (!carts) {
       // ADD INTO CART
-
+      delete req.body.increment;
       req.body = _._form(req.body);
-      var required = ["product"];
+      var required = ["product", "variations"];
       var validate = _._checkFields(req.body, required);
       if (validate !== true) throw new Error(validate.message);
 
       req.body.user = req.Auth._id;
+      req.body.quantity = 1;
 
       const addToCart = await Model._create(_Cart, req.body);
       if (!addToCart) throw new Error("Invalid Arguments");
@@ -113,33 +117,45 @@ exports.addToCart = async (req, res) => {
 
       return false;
     }
-    // console.log(!carts);
     // UPDATE CART
 
-    delete req.body.product;
-    delete req.body.variations;
-    const updateFields = Object.keys(req.body);
-    const allowFields = ["quantity"];
-    const validations = updateFields.every((update) =>
-      allowFields.includes(update)
-    );
-    if (!validations) throw new Error("Invalid Arguments");
+    if (increment) {
+      delete req.body.product;
+      delete req.body.variations;
+      delete req.body.increment;
+      const cart = await Model._findOne(_Cart, conditions, {}, false);
+      let quantity = cart['quantity'] + 1;
+      var updatedCart = await CartModal.findByIdAndUpdate(cart._id, {quantity})
+      _.res(res, updatedCart, 200);
 
-    const cart = await Model._findOne(_Cart, conditions, {}, false);
+    } else {
 
-    Object.keys(req.body).map((k) => {
-      cart[k] = req.body[k];
-    });
+      delete req.body.product;
+      delete req.body.variations;
+      delete req.body.increment;
+      const updateFields = Object.keys(req.body);
+      const allowFields = ["quantity"];
+      const validations = updateFields.every((update) =>
+        allowFields.includes(update)
+      );
+      if (!validations) throw new Error("Invalid Arguments");
 
-    var updatedCart = await cart.save();
+      const cart = await Model._findOne(_Cart, conditions, {}, false);
 
-    if (updatedCart.quantity == 0) {
-      cart.remove();
-      _.res(res, "Cart is empty", 200);
-      return;
+      Object.keys(req.body).map((k) => {
+        cart[k] = req.body[k];
+      });
+
+      var updatedCart = await cart.save();
+
+      if (updatedCart.quantity == 0) {
+        cart.remove();
+        _.res(res, "Cart is empty", 200);
+        return;
+      }
+
+      _.res(res, updatedCart, 200);
     }
-
-    _.res(res, updatedCart, 200);
   } catch (error) {
     _.res(res, error.message, 404);
   }
@@ -164,7 +180,7 @@ exports.cart = async (req, res) => {
             {
               path: "seller",
               select: "name phoneNumber",
-            }
+            },
           ],
         },
       },
@@ -176,17 +192,9 @@ exports.cart = async (req, res) => {
       },
     ];
     const cart = await Model._find(_Cart, conditions, options);
-    console.log(cart);
     if (!cart) throw new Error("Cart Is Empty");
-    let resCart = cart.map((el, index) => {
-      let copyEl = el;
-      copyEl.product.variations = copyEl.product.variations.find(item => {
-        return item._id.equals(cartIds[index].variations)
-      })
-      return copyEl;
-    });
 
-    _.res(res, resCart, 200);
+    _.res(res, {cart, cartIds}, 200);
   } catch (error) {
     _.res(res, error.message, 404);
   }
@@ -195,17 +203,11 @@ exports.cart = async (req, res) => {
 exports.removeFromCart = async (req, res) => {
   try {
     const conditions = {
-      _id: req.body.cart,
+      _id: req.body.productId,
       user: req.Auth._id,
     };
-    const cart = await Model._findOne(_Cart, conditions, {}, false);
-    if (!cart)
-      throw new Error(
-        "Oops! Something went wrong,Maybe you should already removed from cart"
-      );
-
-    cart.remove();
-    _.res(res, "Product Successfully Removed From Cart", 200);
+    var updatedCart = await CartModal.findByIdAndDelete(conditions._id)
+    _.res(res, updatedCart, 200);
   } catch (error) {
     _.res(res, error.message, 404);
   }

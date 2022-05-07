@@ -2,6 +2,7 @@ const SellerController = require('../controllers/Seller/SellerController')
 const SellerProductController = require('../controllers/Seller/ProductsController')
 const SellerPaymentController = require('../controllers/Seller/PaymentsController')
 const SellerOrderController = require('../controllers/Seller/OrdersController')
+const CourierController = require('../controllers/Admin/Courier')
 
 const router = new express.Router();
 
@@ -26,6 +27,9 @@ router.post('/products/csv', auth, CSV_STORAGE.single('csv'), SellerProductContr
 
 //Category
 router.get('/category', auth, SellerProductController.getSubCategory)
+
+// Couriors
+router.post('/couriers', auth, CourierController.getAllCouriors)
 
 //Orders
 router.post('/orders', auth, SellerOrderController.getOrders)
