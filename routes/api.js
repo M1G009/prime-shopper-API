@@ -3,6 +3,7 @@ const CategoryController = require('../controllers/CategoriesController')
 const UserProductController = require('../controllers/User/ProductsController')
 const UserPaymentController = require('../controllers/User/PaymentsController')
 const UserOrderController = require('../controllers/User/OrdersController')
+const FaqController = require('../controllers/Faq')
 
 const router = new express.Router();
 
@@ -58,6 +59,9 @@ router.post('/conversion', auth, ChatController.conversion)
 //Brands
 router.post('/get/brands', BrandsController.getBrands)
 router.post('/get/brand', BrandsController.getBrand)
+
+// FAQ
+router.get('/faq', FaqController.getAllFaq)
 
 
 router.post('/uploadImage', IMAGE_STORAGE.single('document'), (req, res) => {

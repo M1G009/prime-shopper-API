@@ -1,5 +1,6 @@
 const CategoriesController = require('../controllers/Admin/CategoriesController')
 const CourierController = require('../controllers/Admin/Courier')
+const FaqController = require('../controllers/Faq')
 
 const router = new express.Router();
 
@@ -23,6 +24,9 @@ router.post('/category/delete', CategoriesController.deleteCategory)
 router.get('/couriers', CourierController.getAllCouriors)
 router.post('/courier/add', CourierController.addCourior)
 router.post('/courier/delete', CourierController.deleteCourior)
+
+// FAQ
+router.post('/faq/add', FaqController.addFaq)
 
 
 // async function auth(req, res, next) {
