@@ -8,7 +8,6 @@ var storage = multer.diskStorage({
         cb(null, path.join(APP_PATH, path.join('public', destination)))
     },
     filename: function (req, file, cb) {
-        console.log(file);
         cb(null, file.fieldname + '-' + Date.now() + file.originalname)
     }
 })

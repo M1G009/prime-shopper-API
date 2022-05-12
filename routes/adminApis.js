@@ -13,7 +13,6 @@ const router = new express.Router();
 // router.post('/reset/password', SellerController.resetPassword)
 
 // Categories
-// router.post('/product/add', auth, IMAGE_STORAGE.fields([{ name: 'banner', maxCount: 1 }, { name: 'images', maxCount: 8 }]), SellerProductController.doAdd)
 router.get('/categories', CategoriesController.getCategories)
 router.get('/categories/:id', CategoriesController.getCategory)
 router.post('/category/add', IMAGE_STORAGE.fields([{ name: 'banner', maxCount: 1 }]), CategoriesController.addCategory)

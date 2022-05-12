@@ -10,53 +10,155 @@ var xlsx = require("xlsx");
 exports.doAdd = async (req, res) => {
   try {
     req.body = _._form(req.body);
-    var required = ["category", "title", "price", "sellingPrice"];
-    var validate = _._checkFields(req.body, required);
-    if (validate !== true) throw new Error(validate.message);
 
-    res.status(200).json({
-      message: "success",
+    let productdata = req.body;
+    let AllFiles = req.files;
+
+    let productImages = [];
+
+    AllFiles.images.map((el) => {
+      return productImages.push(
+        `https://api.datavidhya.com/temp/${el.filename}`
+      );
     });
 
-    // if (req.files && req.files.banner && req.files.banner.length !== 0) {
-    //     req.body.banner = req.files.banner[0].filename;
-    // }
-    // if (req.files && req.files.images) {
-    //     var productImages = []
-    //     req.files.images.map(file => {
-    //         productImages.push(file.filename)
-    //     })
-    // }
+    let newProduct = {
+      category: productdata.category,
+      parentId: productdata.parentId,
+      seller: req.SellerAuth._id,
+      title: productdata.title,
+      sku: productdata.sku,
+      description: productdata.description,
+      status: productdata.status,
+      productStatus: "Active",
+      slug: slugify(productdata.title, {
+        replacement: "-",
+        remove: undefined,
+        lower: true,
+        strict: false,
+        locale: "vi",
+        trim: true,
+      }),
+      brand_name: productdata.brand_name,
+      external_product_id: productdata.external_product_id,
+      external_product_id_type: productdata.external_product_id_type,
+      part_number: productdata.part_number,
+      bullet_point: productdata.bullet_point,
+      max_shelf_life: productdata.max_shelf_life,
+      material_type_free: productdata.material_type_free,
+      material_composition: productdata.material_composition,
+      is_waterproof: productdata.is_waterproof,
+      manufacturer: productdata.manufacturer,
+      packer_details: productdata.packer_details,
+      number_of_boxes: productdata.number_of_boxes,
+      country_of_origin: productdata.country_of_origin,
+      product_information: productdata.product_information,
+      fulfillment_latency: productdata.fulfillment_latency,
+      max_order_quantity: productdata.max_order_quantity,
+      safety_information: productdata.safety_information,
+      indications: productdata.indications,
+      directions: productdata.directions,
+      legal_disclaimer: productdata.legal_disclaimer,
+      variations1: {
+        var_type: productdata.relationship_type1,
+        var_theme_type: productdata.variation_theme1,
+        data: [productdata.variation_Value1],
+      },
+      variations2: {
+        var_type: productdata.relationship_type2,
+        var_theme_type: productdata.variation_theme2,
+        data: [productdata.variation_Value2],
+      },
+      variations: [
+        {
+          banner: `https://api.datavidhya.com/temp/${AllFiles.banner[0].filename}`,
+          variation1: {
+            var_title: productdata.variation_theme1,
+            value: productdata.variation_Value1,
+          },
+          variation2: {
+            var_title: productdata.variation_theme2,
+            value: productdata.variation_Value2,
+          },
+          quantity: productdata.quantity,
+          images: productImages,
+          dimensions: {
+            item_length: productdata.item_length,
+            item_width: productdata.item_width,
+            item_height: productdata.item_height,
+            item_weight: productdata.item_weight,
+          },
+          price: {
+            price_in_india: productdata.price_in_india,
+            price_in_unitedkingdom: productdata.price_in_unitedkingdom,
+            price_in_france: productdata.price_in_france,
+            price_in_germany: productdata.price_in_germany,
+            price_in_netherland: productdata.price_in_netherland,
+            price_in_switzerland: productdata.price_in_switzerland,
+            price_in_italy: productdata.price_in_italy,
+            price_in_canada: productdata.price_in_canada,
+            price_in_unitedstate: productdata.price_in_unitedstate,
+          },
+          sellingPrice: {
+            selling_price_in_india: productdata.selling_price_in_india,
+            selling_price_in_unitedkingdom:
+              productdata.selling_price_in_unitedkingdom,
+            selling_price_in_france: productdata.selling_price_in_france,
+            selling_price_in_germany: productdata.selling_price_in_germany,
+            selling_price_in_netherland:
+              productdata.selling_price_in_netherland,
+            selling_price_in_switzerland:
+              productdata.selling_price_in_switzerland,
+            selling_price_in_italy: productdata.selling_price_in_italy,
+            selling_price_in_canada: productdata.selling_price_in_canada,
+            selling_price_in_unitedstate:
+              productdata.selling_price_in_unitedstate,
+          },
+          discount: {
+            discount_price_in_india:
+              (productdata.selling_price_in_india /
+                productdata.price_in_india) *
+              100,
+            discount_price_in_unitedkingdom:
+              (productdata.selling_price_in_unitedkingdom /
+                productdata.price_in_unitedkingdom) *
+              100,
+            discount_price_in_france:
+              (productdata.selling_price_in_france /
+                productdata.price_in_france) *
+              100,
+            discount_price_in_germany:
+              (productdata.selling_price_in_germany /
+                productdata.price_in_germany) *
+              100,
+            discount_price_in_netherland:
+              (productdata.selling_price_in_netherland /
+                productdata.price_in_netherland) *
+              100,
+            discount_price_in_switzerland:
+              (productdata.selling_price_in_switzerland /
+                productdata.price_in_switzerland) *
+              100,
+            discount_price_in_italy:
+              (productdata.selling_price_in_italy /
+                productdata.price_in_italy) *
+              100,
+            discount_price_in_canada:
+              (productdata.selling_price_in_canada /
+                productdata.price_in_canada) *
+              100,
+            discount_price_in_unitedstate:
+              (productdata.selling_price_in_unitedstate /
+                productdata.price_in_unitedstate) *
+              100,
+          },
+        },
+      ],
+    };
 
-    // var discount = (req.body.price - req.body.sellingPrice) / req.body.price * 100;
-    // if (discount <= 0) throw new Error('Selling price greater than price,Please enter valid price');
+    let addProduct = await Product.create(newProduct);
 
-    // const data = {
-    //     category: req.body.category,
-    //     seller: req.SellerAuth._id,
-    //     title: req.body.title,
-    //     slug: _._convertToSlug(req.body.title),
-    //     price: req.body.price,
-    //     sellingPrice: req.body.sellingPrice,
-    //     discount: discount.toFixed(2),
-    //     SKU: req.body.SKU,
-    //     quantity: req.body.quantity,
-    //     description: req.body.description,
-    //     features: req.body.features,
-    //     images: productImages,
-    //     banner: req.body.banner,
-    //     status: req.body.status
-    // }
-    // if (req.body.productOtherDetails && req.body.productOtherDetails !== '') {
-    //     data.productOtherDetails = JSON.parse(req.body.productOtherDetails)
-    // }
-    // const addProduct = await Model._create(_Products, data)
-    // // const addProduct = ''
-    // if (!addProduct) {
-    //     throw new Error('Invalid Arguments')
-    // }
-
-    // _.res(res, addProduct, 200);
+    _.res(res, addProduct, 200);
   } catch (error) {
     _.res(res, error.message, 404);
   }
@@ -202,12 +304,12 @@ exports.doAddCSV = async (req, res) => {
         childrenObject["sellingPrice"] = {};
         childrenObject["discount"] = {};
         childrenObject["variation1"] = {
-          var_title: '',
-          value: '',
+          var_title: "",
+          value: "",
         };
         childrenObject["variation2"] = {
-          var_title: '',
-          value: '',
+          var_title: "",
+          value: "",
         };
 
         if (el.feed_product_type) {
@@ -276,7 +378,7 @@ exports.doAddCSV = async (req, res) => {
           newObject["material_composition"] = el.material_composition;
         }
         if (el.is_waterproof) {
-          newObject["is_waterproof"] = (el.is_waterproof == 'true');
+          newObject["is_waterproof"] = el.is_waterproof == "true";
         }
         if (el.manufacturer) {
           newObject["manufacturer"] = el.manufacturer;
@@ -484,7 +586,7 @@ exports.doAddCSV = async (req, res) => {
 
         newProducts.push(newObject);
       } else if (el.parent_child == "Child") {
-        let parentEle = newProducts[newProducts.length - 1]
+        let parentEle = newProducts[newProducts.length - 1];
         let childrenObject = {};
 
         childrenObject["images"] = [];
@@ -493,32 +595,33 @@ exports.doAddCSV = async (req, res) => {
         childrenObject["sellingPrice"] = {};
         childrenObject["discount"] = {};
 
-        if(el.variation_theme1 != parentEle["variations1"].var_theme_type || el.variation_theme2 != parentEle["variations2"].var_theme_type){
-          return false
+        if (
+          el.variation_theme1 != parentEle["variations1"].var_theme_type ||
+          el.variation_theme2 != parentEle["variations2"].var_theme_type
+        ) {
+          return false;
         }
         if (el.banner) {
           childrenObject["banner"] = el.banner;
         }
-        if (
-          el.variation_theme1 &&
-          el.variation_Value1
-        ) {
-          let checkVariation = parentEle["variations1"].data.includes(el.variation_Value1)
-          if(!checkVariation){
-            parentEle["variations1"].data.push(el.variation_Value1)
+        if (el.variation_theme1 && el.variation_Value1) {
+          let checkVariation = parentEle["variations1"].data.includes(
+            el.variation_Value1
+          );
+          if (!checkVariation) {
+            parentEle["variations1"].data.push(el.variation_Value1);
           }
           childrenObject["variation1"] = {
             var_title: el.variation_theme1,
             value: el.variation_Value1,
           };
         }
-        if (
-          el.variation_theme2 &&
-          el.variation_Value2
-        ) {
-          let checkVariation = parentEle["variations2"].data.includes(el.variation_Value2)
-          if(!checkVariation){
-            parentEle["variations2"].data.push(el.variation_Value2)
+        if (el.variation_theme2 && el.variation_Value2) {
+          let checkVariation = parentEle["variations2"].data.includes(
+            el.variation_Value2
+          );
+          if (!checkVariation) {
+            parentEle["variations2"].data.push(el.variation_Value2);
           }
           childrenObject["variation2"] = {
             var_title: el.variation_theme2,
@@ -528,7 +631,7 @@ exports.doAddCSV = async (req, res) => {
 
         // quantity
         if (el.quantity) {
-          childrenObject['quantity'] = el.quantity
+          childrenObject["quantity"] = el.quantity;
         }
 
         // Images {image}
@@ -660,19 +763,21 @@ exports.doAddCSV = async (req, res) => {
             );
         }
 
-        if(newProducts.length){
-          parentEle.variations.push(childrenObject)
+        if (newProducts.length) {
+          parentEle.variations.push(childrenObject);
         }
-
       }
     });
 
+    if (!newProducts.length) {
+      throw new Error("Please add atleast one product in file");
+    }
     // await newProducts
-    let addNewProducts = await Product.insertMany(newProducts)
+    let addNewProducts = await Product.insertMany(newProducts);
 
     res.status(200).json({
       statusMessage: "success",
-      body: addNewProducts
+      body: addNewProducts,
     });
   } catch (err) {
     res.status(404).json({
