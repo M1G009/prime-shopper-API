@@ -84,10 +84,12 @@ const ProductsSchema = new Schema({
   category: {
     type: Schema.Types.ObjectId,
     ref: "AllCategories",
+    require: true
   },
   parentId: {
     type: Schema.Types.ObjectId,
     ref: "AllCategories",
+    require: true
   },
   seller: {
     type: Schema.Types.ObjectId,

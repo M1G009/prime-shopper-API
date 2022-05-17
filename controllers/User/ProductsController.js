@@ -65,7 +65,7 @@ exports.getProduct = async (req, res) => {
     const options = [
       {
         populate: {
-          path: "category",
+          path: "parentId",
         },
       },
       {
