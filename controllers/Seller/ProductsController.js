@@ -50,13 +50,15 @@ exports.doAdd = async (req, res) => {
       max_shelf_life: productdata.max_shelf_life
         ? productdata.max_shelf_life
         : "",
-      material_type_free: productdata.material_type_free
+      material_type_free: productdata.material_type_free.length
         ? productdata.material_type_free
         : "",
       material_composition: productdata.material_composition
         ? productdata.material_composition
         : "",
-      is_waterproof: productdata.is_waterproof ? productdata.is_waterproof : "",
+      is_waterproof: productdata.is_waterproof
+        ? productdata.is_waterproof == "true"
+        : false,
       manufacturer: productdata.manufacturer ? productdata.manufacturer : "",
       packer_details: productdata.packer_details
         ? productdata.packer_details
@@ -131,10 +133,18 @@ exports.doAdd = async (req, res) => {
           quantity: productdata.quantity ? productdata.quantity : "",
           images: productImages,
           dimensions: {
-            item_length: productdata.item_length ? productdata.item_length : "",
-            item_width: productdata.item_width ? productdata.item_width : "",
-            item_height: productdata.item_height ? productdata.item_height : "",
-            item_weight: productdata.item_weight ? productdata.item_weight : "",
+            item_length: productdata.item_length
+              ? productdata.item_length * 1
+              : "",
+            item_width: productdata.item_width
+              ? productdata.item_width * 1
+              : "",
+            item_height: productdata.item_height
+              ? productdata.item_height * 1
+              : "",
+            item_weight: productdata.item_weight
+              ? productdata.item_weight * 1
+              : "",
           },
           price: {
             price_in_india: "",
@@ -190,9 +200,9 @@ exports.doAdd = async (req, res) => {
       productdata.price_in_india >= productdata.selling_price_in_india
     ) {
       productdata.variations[0].price.price_in_india =
-        productdata.price_in_india;
+        productdata.price_in_india * 1;
       productdata.variations[0].price.selling_price_in_india =
-        productdata.selling_price_in_india;
+        productdata.selling_price_in_india * 1;
       productdata.variations[0].price.discount_price_in_india =
         (productdata.selling_price_in_india / productdata.price_in_india) * 100;
     }
@@ -204,9 +214,9 @@ exports.doAdd = async (req, res) => {
         productdata.selling_price_in_unitedkingdom
     ) {
       productdata.variations[0].price.price_in_unitedkingdom =
-        productdata.price_in_unitedkingdom;
+        productdata.price_in_unitedkingdom * 1;
       productdata.variations[0].price.selling_price_in_unitedkingdom =
-        productdata.selling_price_in_unitedkingdom;
+        productdata.selling_price_in_unitedkingdom * 1;
       productdata.variations[0].price.discount_price_in_unitedkingdom =
         (productdata.selling_price_in_unitedkingdom /
           productdata.price_in_unitedkingdom) *
@@ -218,9 +228,9 @@ exports.doAdd = async (req, res) => {
       productdata.price_in_france >= productdata.selling_price_in_france
     ) {
       productdata.variations[0].price.price_in_france =
-        productdata.price_in_france;
+        productdata.price_in_france * 1;
       productdata.variations[0].price.selling_price_in_france =
-        productdata.selling_price_in_france;
+        productdata.selling_price_in_france * 1;
       productdata.variations[0].price.discount_price_in_france =
         (productdata.selling_price_in_france / productdata.price_in_france) *
         100;
@@ -232,9 +242,9 @@ exports.doAdd = async (req, res) => {
       productdata.price_in_germany >= productdata.selling_price_in_germany
     ) {
       productdata.variations[0].price.price_in_germany =
-        productdata.price_in_germany;
+        productdata.price_in_germany * 1;
       productdata.variations[0].price.selling_price_in_germany =
-        productdata.selling_price_in_germany;
+        productdata.selling_price_in_germany * 1;
       productdata.variations[0].price.discount_price_in_germany =
         (productdata.selling_price_in_germany / productdata.price_in_germany) *
         100;
@@ -246,9 +256,9 @@ exports.doAdd = async (req, res) => {
       productdata.price_in_netherland >= productdata.selling_price_in_netherland
     ) {
       productdata.variations[0].price.price_in_netherland =
-        productdata.price_in_netherland;
+        productdata.price_in_netherland * 1;
       productdata.variations[0].price.selling_price_in_netherland =
-        productdata.selling_price_in_netherland;
+        productdata.selling_price_in_netherland * 1;
       productdata.variations[0].price.discount_price_in_netherland =
         (productdata.selling_price_in_netherland /
           productdata.price_in_netherland) *
@@ -262,9 +272,9 @@ exports.doAdd = async (req, res) => {
         productdata.selling_price_in_switzerland
     ) {
       productdata.variations[0].price.price_in_switzerland =
-        productdata.price_in_switzerland;
+        productdata.price_in_switzerland * 1;
       productdata.variations[0].price.selling_price_in_switzerland =
-        productdata.selling_price_in_switzerland;
+        productdata.selling_price_in_switzerland * 1;
       productdata.variations[0].price.discount_price_in_switzerland =
         (productdata.selling_price_in_switzerland /
           productdata.price_in_switzerland) *
@@ -277,9 +287,9 @@ exports.doAdd = async (req, res) => {
       productdata.price_in_italy >= productdata.selling_price_in_italy
     ) {
       productdata.variations[0].price.price_in_italy =
-        productdata.price_in_italy;
+        productdata.price_in_italy * 1;
       productdata.variations[0].price.selling_price_in_italy =
-        productdata.selling_price_in_italy;
+        productdata.selling_price_in_italy * 1;
       productdata.variations[0].price.discount_price_in_italy =
         (productdata.selling_price_in_italy / productdata.price_in_italy) * 100;
     }
@@ -290,9 +300,9 @@ exports.doAdd = async (req, res) => {
       productdata.price_in_canada >= productdata.selling_price_in_canada
     ) {
       productdata.variations[0].price.price_in_canada =
-        productdata.price_in_canada;
+        productdata.price_in_canada * 1;
       productdata.variations[0].price.selling_price_in_canada =
-        productdata.selling_price_in_canada;
+        productdata.selling_price_in_canada * 1;
       productdata.variations[0].price.discount_price_in_canada =
         (productdata.selling_price_in_canada / productdata.price_in_canada) *
         100;
@@ -305,9 +315,9 @@ exports.doAdd = async (req, res) => {
         productdata.selling_price_in_unitedstate
     ) {
       productdata.variations[0].price.price_in_unitedstate =
-        productdata.price_in_unitedstate;
+        productdata.price_in_unitedstate * 1;
       productdata.variations[0].price.selling_price_in_unitedstate =
-        productdata.selling_price_in_unitedstate;
+        productdata.selling_price_in_unitedstate * 1;
       productdata.variations[0].price.discount_price_in_unitedstate =
         (productdata.selling_price_in_unitedstate /
           productdata.price_in_unitedstate) *
@@ -518,6 +528,12 @@ exports.doAddCSV = async (req, res) => {
         }
         if (el.bullet_point5) {
           newObject["bullet_point"].push(el.bullet_point5);
+        }
+        if (el.bullet_point5) {
+          newObject["bullet_point"].push(el.bullet_point6);
+        }
+        if (el.bullet_point5) {
+          newObject["bullet_point"].push(el.bullet_point7);
         }
         if (el.max_shelf_life) {
           newObject["max_shelf_life"] = el.max_shelf_life;
@@ -951,15 +967,13 @@ exports.doUpdate = async (req, res) => {
 
     let productdata = req.body;
     let AllFiles = req.files;
-    console.log(productdata);
     if (productdata._id) {
-      let checkProduct = await Product.findById(productdata._id);
+      let checkProduct = await Product.findById(productdata._id).clone();
 
       if (!checkProduct) {
         throw new Error("Product Not Found");
       }
-
-      let updateData = { ...checkProduct };
+      let updateData = {};
 
       updateData.title = productdata.title;
       updateData.sku = productdata.sku;
@@ -984,7 +998,9 @@ exports.doUpdate = async (req, res) => {
       updateData.max_shelf_life = productdata.max_shelf_life;
       updateData.material_type_free = productdata.material_type_free;
       updateData.material_composition = productdata.material_composition;
-      updateData.is_waterproof = productdata.is_waterproof;
+      updateData.is_waterproof = productdata.is_waterproof
+        ? productdata.is_waterproof == "true"
+        : false;
       updateData.manufacturer = productdata.manufacturer;
       updateData.packer_details = productdata.packer_details;
       updateData.importer_details = productdata.importer_details;
@@ -1002,7 +1018,7 @@ exports.doUpdate = async (req, res) => {
         (el) => (el._id = productdata.varientId)
       );
 
-      let updateVarient = findVarient;
+      let updateVarient = Object.assign({}, findVarient._doc);
 
       updateVarient.variation1 = {
         var_title: productdata.variation_theme1
@@ -1019,34 +1035,37 @@ exports.doUpdate = async (req, res) => {
       };
 
       updateVarient.dimensions = {
-        item_length: productdata.item_length ? productdata.item_length : "",
-        item_width: productdata.item_width ? productdata.item_width : "",
-        item_height: productdata.item_height ? productdata.item_height : "",
-        item_weight: productdata.item_weight ? productdata.item_weight : "",
+        item_length: productdata.item_length ? productdata.item_length * 1 : 0,
+        item_width: productdata.item_width ? productdata.item_width * 1 : 0,
+        item_height: productdata.item_height ? productdata.item_height * 1 : 0,
+        item_weight: productdata.item_weight ? productdata.item_weight * 1 : 0,
       };
-      updateVarient.quantity = productdata.quantity ? productdata.quantity : "";
 
-      if (productdata.noBanner && productdata.noBanner == "true") {
+      updateVarient.quantity = productdata.quantity
+        ? productdata.quantity * 1
+        : 0;
+
+      if (AllFiles && AllFiles.images && AllFiles.images.length) {
+        let productImages = [];
+        AllFiles.images.map((el) => {
+          if (el.filename) {
+            return productImages.push(
+              `https://api.datavidhya.com/temp/${el.filename}`
+            );
+          }
+        });
+        updateVarient.images = productImages;
       } else {
-        if (AllFiles.images && AllFiles.images.length) {
-          let productImages = [];
-          AllFiles.images.map((el) => {
-            if (el.filename) {
-              return productImages.push(
-                `https://api.datavidhya.com/temp/${el.filename}`
-              );
-            }
-          });
-          updateVarient.images = productImages;
-        }
+        updateVarient.images = findVarient.images;
       }
 
-      if (productdata.noImages && productdata.noImages == "true") {
-      } else {
+      if (AllFiles && AllFiles.banner && AllFiles.banner.length && AllFiles.banner[0].filename) {
         updateVarient.banner =
           AllFiles.banner[0] && AllFiles.banner[0].filename
             ? `https://api.datavidhya.com/temp/${AllFiles.banner[0].filename}`
             : "";
+      } else {
+        updateVarient.banner = findVarient.banner;
       }
 
       if (
@@ -1054,25 +1073,27 @@ exports.doUpdate = async (req, res) => {
         productdata.selling_price_in_india &&
         productdata.price_in_india >= productdata.selling_price_in_india
       ) {
-        updateVarient.price.price_in_india = productdata.price_in_india;
-        updateVarient.price.selling_price_in_india =
-          productdata.selling_price_in_india;
-        updateVarient.price.discount_price_in_india =
+        updateVarient.price.price_in_india = productdata.price_in_india * 1;
+        updateVarient.sellingPrice.selling_price_in_india =
+          productdata.selling_price_in_india * 1;
+        updateVarient.discount.discount_price_in_india =
           (productdata.selling_price_in_india / productdata.price_in_india) *
           100;
       }
 
       if (
+        productdata.price_in_unitedkingdom &&
         productdata.selling_price_in_unitedkingdom &&
-        productdata.selling_price_in_unitedkingdom &&
+        productdata.price_in_unitedkingdom != null &&
+        productdata.selling_price_in_unitedkingdom != null &&
         productdata.price_in_unitedkingdom >=
           productdata.selling_price_in_unitedkingdom
       ) {
         updateVarient.price.price_in_unitedkingdom =
-          productdata.price_in_unitedkingdom;
-        updateVarient.price.selling_price_in_unitedkingdom =
-          productdata.selling_price_in_unitedkingdom;
-        updateVarient.price.discount_price_in_unitedkingdom =
+          productdata.price_in_unitedkingdom * 1;
+        updateVarient.sellingPrice.selling_price_in_unitedkingdom =
+          productdata.selling_price_in_unitedkingdom * 1;
+        updateVarient.discount.discount_price_in_unitedkingdom =
           (productdata.selling_price_in_unitedkingdom /
             productdata.price_in_unitedkingdom) *
           100;
@@ -1083,10 +1104,10 @@ exports.doUpdate = async (req, res) => {
         productdata.selling_price_in_france &&
         productdata.price_in_france >= productdata.selling_price_in_france
       ) {
-        updateVarient.price.price_in_france = productdata.price_in_france;
-        updateVarient.price.selling_price_in_france =
-          productdata.selling_price_in_france;
-        updateVarient.price.discount_price_in_france =
+        updateVarient.price.price_in_france = productdata.price_in_france * 1;
+        updateVarient.sellingPrice.selling_price_in_france =
+          productdata.selling_price_in_france * 1;
+        updateVarient.discount.discount_price_in_france =
           (productdata.selling_price_in_france / productdata.price_in_france) *
           100;
       }
@@ -1096,10 +1117,10 @@ exports.doUpdate = async (req, res) => {
         productdata.selling_price_in_germany &&
         productdata.price_in_germany >= productdata.selling_price_in_germany
       ) {
-        updateVarient.price.price_in_germany = productdata.price_in_germany;
-        updateVarient.price.selling_price_in_germany =
-          productdata.selling_price_in_germany;
-        updateVarient.price.discount_price_in_germany =
+        updateVarient.price.price_in_germany = productdata.price_in_germany * 1;
+        updateVarient.sellingPrice.selling_price_in_germany =
+          productdata.selling_price_in_germany * 1;
+        updateVarient.discount.discount_price_in_germany =
           (productdata.selling_price_in_germany /
             productdata.price_in_germany) *
           100;
@@ -1112,10 +1133,10 @@ exports.doUpdate = async (req, res) => {
           productdata.selling_price_in_netherland
       ) {
         updateVarient.price.price_in_netherland =
-          productdata.price_in_netherland;
-        updateVarient.price.selling_price_in_netherland =
-          productdata.selling_price_in_netherland;
-        updateVarient.price.discount_price_in_netherland =
+          productdata.price_in_netherland * 1;
+        updateVarient.sellingPrice.selling_price_in_netherland =
+          productdata.selling_price_in_netherland * 1;
+        updateVarient.discount.discount_price_in_netherland =
           (productdata.selling_price_in_netherland /
             productdata.price_in_netherland) *
           100;
@@ -1128,10 +1149,10 @@ exports.doUpdate = async (req, res) => {
           productdata.selling_price_in_switzerland
       ) {
         updateVarient.price.price_in_switzerland =
-          productdata.price_in_switzerland;
-        updateVarient.price.selling_price_in_switzerland =
-          productdata.selling_price_in_switzerland;
-        updateVarient.price.discount_price_in_switzerland =
+          productdata.price_in_switzerland * 1;
+        updateVarient.sellingPrice.selling_price_in_switzerland =
+          productdata.selling_price_in_switzerland * 1;
+        updateVarient.discount.discount_price_in_switzerland =
           (productdata.selling_price_in_switzerland /
             productdata.price_in_switzerland) *
           100;
@@ -1142,10 +1163,10 @@ exports.doUpdate = async (req, res) => {
         productdata.selling_price_in_italy &&
         productdata.price_in_italy >= productdata.selling_price_in_italy
       ) {
-        updateVarient.price.price_in_italy = productdata.price_in_italy;
-        updateVarient.price.selling_price_in_italy =
-          productdata.selling_price_in_italy;
-        updateVarient.price.discount_price_in_italy =
+        updateVarient.price.price_in_italy = productdata.price_in_italy * 1;
+        updateVarient.sellingPrice.selling_price_in_italy =
+          productdata.selling_price_in_italy * 1;
+        updateVarient.discount.discount_price_in_italy =
           (productdata.selling_price_in_italy / productdata.price_in_italy) *
           100;
       }
@@ -1155,10 +1176,10 @@ exports.doUpdate = async (req, res) => {
         productdata.selling_price_in_canada &&
         productdata.price_in_canada >= productdata.selling_price_in_canada
       ) {
-        updateVarient.price.price_in_canada = productdata.price_in_canada;
-        updateVarient.price.selling_price_in_canada =
-          productdata.selling_price_in_canada;
-        updateVarient.price.discount_price_in_canada =
+        updateVarient.price.price_in_canada = productdata.price_in_canada * 1;
+        updateVarient.sellingPrice.selling_price_in_canada =
+          productdata.selling_price_in_canada * 1;
+        updateVarient.discount.discount_price_in_canada =
           (productdata.selling_price_in_canada / productdata.price_in_canada) *
           100;
       }
@@ -1170,38 +1191,39 @@ exports.doUpdate = async (req, res) => {
           productdata.selling_price_in_unitedstate
       ) {
         updateVarient.price.price_in_unitedstate =
-          productdata.price_in_unitedstate;
-        updateVarient.price.selling_price_in_unitedstate =
-          productdata.selling_price_in_unitedstate;
-        updateVarient.price.discount_price_in_unitedstate =
+          productdata.price_in_unitedstate * 1;
+        updateVarient.sellingPrice.selling_price_in_unitedstate =
+          productdata.selling_price_in_unitedstate * 1;
+        updateVarient.discount.discount_price_in_unitedstate =
           (productdata.selling_price_in_unitedstate /
             productdata.price_in_unitedstate) *
           100;
       }
 
-      console.log(updateVarient);
+      if (updateData && updateData.variations && updateData.variations.length) {
+        let val1Array = [];
+        let val2Array = [];
+        updateData.variations.map((el) => {
+          let val1 = el.variation1.value;
+          let val2 = el.variation2.value;
 
-      let newUpdateData = checkProduct;
-      let val1Array = [];
-      let val2Array = [];
-      newUpdateData.variations.map((el) => {
-        let val1 = el.variations1;
-        let val2 = el.variations1;
+          if (!val1Array.includes(val1)) {
+            val1Array.push(val1);
+          }
+          if (!val2Array.includes(val2)) {
+            val2Array.push(val2);
+          }
+        });
 
-        if (!val1Array.includes(val1)) {
-          val1Array.push(val1);
-        }
-        if (!val2Array.includes(val2)) {
-          val2Array.push(val2);
-        }
+        updateData.variations1.data = val1Array;
+        updateData.variations2.data = val2Array;
+      }
+      let updatedateArray = await Product.findByIdAndUpdate(productdata._id, {
+        ...updateData,
+        variations: updateVarient,
       });
 
-      newUpdateData.variations1.data = val1Array;
-      val2Array = val2Array;
-
-      let updatedata = await Product.findByIdAndUpdate(productdata._id, newUpdateData);
-
-        return _.res(res, updatedata, 200);
+      return _.res(res, updatedateArray, 200);
     }
 
     _.res(res, updateVarient, 200);

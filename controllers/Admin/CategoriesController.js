@@ -44,7 +44,6 @@ exports.addCategory = async (req, res) => {
     }
 
     let category = { ...req.body };
-    // console.log("category", category);
     if (req.files && req.files.banner && req.files.banner[0]) {
       category.banner = req.files.banner[0].filename;
     }
@@ -123,7 +122,6 @@ exports.updateCategory = async (req, res) => {
     
     let parentId = req.body.parentId;
     let updateId = updateData.id;
-    console.log("updateData", updateData);
 
     let treeCategory = await Categories.findById(parentId);
 
