@@ -5,6 +5,7 @@ const childSchema = new Schema({
     default: "",
     required: [true, "Please add product banner"],
   },
+  Colour: String,
   parent_sku: String,
   variation1: {
     var_title: String,

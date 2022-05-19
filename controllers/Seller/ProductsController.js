@@ -114,6 +114,7 @@ exports.doAdd = async (req, res) => {
             AllFiles.banner[0] && AllFiles.banner[0].filename
               ? `https://api.datavidhya.com/temp/${AllFiles.banner[0].filename}`
               : "",
+          Colour: productdata.Colour ? productdata.Colour : "",
           variation1: {
             var_title: productdata.variation_theme1
               ? productdata.variation_theme1
@@ -807,6 +808,10 @@ exports.doAddCSV = async (req, res) => {
           childrenObject["quantity"] = el.quantity;
         }
 
+        if (el.Colour) {
+          childrenObject["Colour"] = el.Colour;
+        }
+
         // Images {image}
         if (el.other_image_url1) {
           childrenObject["images"].push(el.other_image_url1);
@@ -1045,6 +1050,10 @@ exports.doUpdate = async (req, res) => {
         ? productdata.quantity * 1
         : 0;
 
+        updateVarient.Colour = productdata.Colour
+        ? productdata.Colour
+        : "";
+
       if (AllFiles && AllFiles.images && AllFiles.images.length) {
         let productImages = [];
         AllFiles.images.map((el) => {
@@ -1059,7 +1068,12 @@ exports.doUpdate = async (req, res) => {
         updateVarient.images = findVarient.images;
       }
 
-      if (AllFiles && AllFiles.banner && AllFiles.banner.length && AllFiles.banner[0].filename) {
+      if (
+        AllFiles &&
+        AllFiles.banner &&
+        AllFiles.banner.length &&
+        AllFiles.banner[0].filename
+      ) {
         updateVarient.banner =
           AllFiles.banner[0] && AllFiles.banner[0].filename
             ? `https://api.datavidhya.com/temp/${AllFiles.banner[0].filename}`
