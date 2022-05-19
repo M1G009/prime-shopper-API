@@ -20,7 +20,7 @@ exports.doAdd = async (req, res) => {
       AllFiles.images.map((el) => {
         if (el.filename) {
           return productImages.push(
-            `https://api.datavidhya.com/temp/${el.filename}`
+            `https://api.admincliq.com/temp/${el.filename}`
           );
         }
       });
@@ -112,7 +112,7 @@ exports.doAdd = async (req, res) => {
         {
           banner:
             AllFiles.banner[0] && AllFiles.banner[0].filename
-              ? `https://api.datavidhya.com/temp/${AllFiles.banner[0].filename}`
+              ? `https://api.admincliq.com/temp/${AllFiles.banner[0].filename}`
               : "",
           Colour: productdata.Colour ? productdata.Colour : "",
           variation1: {
@@ -1059,7 +1059,7 @@ exports.doUpdate = async (req, res) => {
         AllFiles.images.map((el) => {
           if (el.filename) {
             return productImages.push(
-              `https://api.datavidhya.com/temp/${el.filename}`
+              `https://api.admincliq.com/temp/${el.filename}`
             );
           }
         });
@@ -1076,7 +1076,7 @@ exports.doUpdate = async (req, res) => {
       ) {
         updateVarient.banner =
           AllFiles.banner[0] && AllFiles.banner[0].filename
-            ? `https://api.datavidhya.com/temp/${AllFiles.banner[0].filename}`
+            ? `https://api.admincliq.com/temp/${AllFiles.banner[0].filename}`
             : "";
       } else {
         updateVarient.banner = findVarient.banner;
