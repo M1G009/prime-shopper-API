@@ -757,7 +757,6 @@ exports.doAddCSV = async (req, res) => {
         }
 
         newObject["variations"].push(childrenObject);
-
         newProducts.push(newObject);
       } else if (el.parent_child == "Child") {
         let parentEle = newProducts[newProducts.length - 1];
@@ -768,9 +767,9 @@ exports.doAddCSV = async (req, res) => {
         childrenObject["price"] = {};
         childrenObject["sellingPrice"] = {};
         childrenObject["discount"] = {};
-
+        
         if (
-          el.variation_theme1 != parentEle["variations1"].var_theme_type ||
+          el.variation_theme1 != parentEle["variations1"].var_theme_type &&
           el.variation_theme2 != parentEle["variations2"].var_theme_type
         ) {
           return false;
@@ -978,7 +977,7 @@ exports.doUpdate = async (req, res) => {
       if (!checkProduct) {
         throw new Error("Product Not Found");
       }
-      let updateData = {};
+      let updateData = Object.assign({}, checkProduct._doc);
 
       updateData.title = productdata.title;
       updateData.sku = productdata.sku;
@@ -1020,8 +1019,9 @@ exports.doUpdate = async (req, res) => {
       updateData.legal_disclaimer = productdata.legal_disclaimer;
 
       let findVarient = checkProduct.variations.find(
-        (el) => (el._id = productdata.varientId)
-      );
+        (el) => {
+          return el._id.equals(productdata.varientId)
+        })
 
       let updateVarient = Object.assign({}, findVarient._doc);
 
@@ -1214,6 +1214,16 @@ exports.doUpdate = async (req, res) => {
           100;
       }
 
+      let allVariations = [...checkProduct.variations]
+      let checkIndex = allVariations.findIndex((el, i) => {
+        return el._id == updateVarient._id;
+      })
+
+      if(checkIndex > -1){
+        allVariations[checkIndex] = updateVarient
+        updateData['variations'] = allVariations;
+      }
+
       if (updateData && updateData.variations && updateData.variations.length) {
         let val1Array = [];
         let val2Array = [];
@@ -1221,23 +1231,21 @@ exports.doUpdate = async (req, res) => {
           let val1 = el.variation1.value;
           let val2 = el.variation2.value;
 
-          if (!val1Array.includes(val1)) {
+          if (!val1Array.includes(val1) && val1) {
             val1Array.push(val1);
           }
-          if (!val2Array.includes(val2)) {
+          if (!val2Array.includes(val2) && val2) {
             val2Array.push(val2);
           }
         });
 
-        updateData.variations1.data = val1Array;
-        updateData.variations2.data = val2Array;
+        updateData.variations1['data'] = val1Array;
+        updateData.variations2['data'] = val2Array;
       }
-      let updatedateArray = await Product.findByIdAndUpdate(productdata._id, {
-        ...updateData,
-        variations: updateVarient,
-      });
 
-      return _.res(res, updatedateArray, 200);
+      let updatedateArray = await Product.findByIdAndUpdate(productdata._id, {...updateData});
+
+      return _.res(res, {...updatedateArray}, 200);
     }
 
     _.res(res, updateVarient, 200);
