@@ -1,4 +1,4 @@
-const Orders =  require('../../models/schemas/OrdersSchema')
+const Orders = require("../../models/schemas/OrdersSchema");
 const Razorpay = require("razorpay");
 
 var Publishable_Key =
@@ -15,7 +15,6 @@ var instance = new Razorpay({
 
 exports.createPayment = async (req, res) => {
   try {
-    // console.log(req.body);
     let paymentData = req.body.paymentData;
     let userData = req.body.checkoutdata;
 
@@ -42,6 +41,10 @@ exports.createPayment = async (req, res) => {
       }
     });
 
+    // return res.status(200).json({
+    //   cartData
+    // })
+
     var options = {
       amount: paymentData.total,
       currency: "INR",
@@ -50,79 +53,85 @@ exports.createPayment = async (req, res) => {
 
     instance.orders.create(options, async function (err, order) {
       if (err) {
-        res.send(err);
+        res.status(404).json({
+          status: "fail",
+          message: err
+        })
       }
-
-      let billingAddressData = {
-        address_line1: billingData.address_line1
-          ? billingData.address_line1
-          : "",
-        address_line2: billingData.address_line2
-          ? billingData.address_line2
-          : "",
-        address_zip: billingData.address_zip ? billingData.address_zip : "",
-        address_city: billingData.address_city ? billingData.address_city : "",
-        address_state: billingData.address_state
-          ? billingData.address_state
-          : "",
-        address_country: billingData.address_country
-          ? billingData.address_country
-          : "",
-      };
-
-      let paymentEntrydata = {
-        user: req.Auth._id,
-        seller: sellers,
-        paymentID: order.id,
-        paymentStatus: "Paid",
-        paymentType: "Razorpay",
-        paymentToken: paymentData.token,
-        paymentReceipt: order.receipt,
-        billingAddress: billingAddressData,
-        invoiceNumber: order.receipt,
-        amount: paymentData.total,
-        sellingAmount: paymentData.sellingTotal,
-      };
-
-      // console.log(order);
-      const payment = await Model._create(_Payment, paymentEntrydata);
-      // console.log("payment", payment);
-      if (!payment) throw new Error("No Payment found");
-
-      let ordersData = [];
-
-      cartData.map((el) => {
-        let seller = el.product.seller._id;
-
-        let product = {
-          product: el.product.id,
-          quantity: el.quantity,
-          price: el.product.variations[0].sellingPrice.selling_price_in_india,
+      try {
+        let billingAddressData = {
+          address_line1: billingData.address_line1
+            ? billingData.address_line1
+            : "",
+          address_line2: billingData.address_line2
+            ? billingData.address_line2
+            : "",
+          address_zip: billingData.address_zip ? billingData.address_zip : "",
+          address_city: billingData.address_city
+            ? billingData.address_city
+            : "",
+          address_state: billingData.address_state
+            ? billingData.address_state
+            : "",
+          address_country: billingData.address_country
+            ? billingData.address_country
+            : "",
         };
 
-        let orderData = {
+        let paymentEntrydata = {
           user: req.Auth._id,
-          product: product,
-          seller: seller,
-          orderNumber: order.id,
-          note: "",
-          sellingAmount: el.quantity * el.product.variations[0].sellingPrice.selling_price_in_india,
-          total: el.quantity * el.product.variations[0].price.price_in_india,
-          status: "Pending",
-          payment_id: payment._id,
-          shippingAddress: billingAddressData,
+          seller: sellers,
+          paymentID: order.id,
+          paymentStatus: "Paid",
+          paymentType: "Razorpay",
+          paymentToken: paymentData.token,
+          paymentReceipt: order.receipt,
+          billingAddress: billingAddressData,
+          invoiceNumber: order.receipt,
+          amount: paymentData.total,
+          sellingAmount: paymentData.sellingTotal,
         };
 
-        ordersData.push(orderData)
-        
-      });
-      
-      // console.log(ordersData);
+        const payment = await Model._create(_Payment, paymentEntrydata);
+        if (!payment) throw new Error("No Payment found");
 
-      const orderObj = await Orders.create(ordersData)
-      // console.log("payment", orderObj);
-      if (!payment) throw new Error("No Order Proceed");
-      _.res(res, {payment, orderObj}, 200);
+        let ordersData = [];
+        cartData.map((el) => {
+          let seller = el.product.seller._id;
+
+          let product = {
+            product: el.product.id,
+            quantity: el.quantity,
+            price: el.product.variations.sellingPrice.selling_price_in_india,
+          };
+
+          let orderData = {
+            user: req.Auth._id,
+            product: product,
+            seller: seller,
+            orderNumber: order.id,
+            note: "",
+            sellingAmount:
+              el.quantity *
+              el.product.variations.sellingPrice.selling_price_in_india,
+            total: el.quantity * el.product.variations.price.price_in_india,
+            status: "Pending",
+            payment_id: payment._id,
+            shippingAddress: billingAddressData,
+          };
+
+          ordersData.push(orderData);
+        });
+
+
+        const orderObj = await Orders.create(ordersData);
+        _.res(res, { payment, orderObj }, 200);
+      } catch (err) {
+        res.status(404).json({
+          status: "fail",
+          message: err.message
+        })
+      }
     });
 
     // stripe.customers
