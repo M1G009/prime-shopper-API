@@ -1,12 +1,25 @@
 const Schema = mongoose.Schema;
 const childSchema = new Schema({
-  banner: {
+  title: {
+    type: String,
+    required: [true, "Title is required"],
+  },
+  slug: {
     type: String,
     default: "",
+  },
+  banner: {
+    type: String,
     required: [true, "Please add product banner"],
   },
-  Colour: String,
-  parent_sku: String,
+  Colour: {
+    type: String,
+    default: "",
+  },
+  parent_sku: {
+    type: String,
+    default: "",
+  },
   variation1: {
     var_title: String,
     value: String,
@@ -16,16 +29,31 @@ const childSchema = new Schema({
     value: String,
   },
   quantity: {
-    type: Number | String,
-    default: 0
+    type: Number,
+    required: [true, "quantity must be required"]
   },
   images: [String],
-  Product_video_url: String,
+  Product_video_url: {
+    type: String,
+    default: "",
+  },
   dimensions: {
-    item_length: String,
-    item_width: String,
-    item_height: String,
-    item_weight: String,
+    item_length: {
+      type: String,
+      default: "",
+    },
+    item_width: {
+      type: String,
+      default: "",
+    },
+    item_height: {
+      type: String,
+      default: "",
+    },
+    item_weight: {
+      type: String,
+      default: "",
+    },
   },
   price: {
     price_in_india: Number | String,
@@ -60,33 +88,9 @@ const childSchema = new Schema({
     discount_price_in_canada: Number | String,
     discount_price_in_unitedstate: Number | String,
   },
-});
-
-const ProductsSchema = new Schema({
-  category: {
-    type: Schema.Types.ObjectId,
-    ref: "AllCategories",
-    require: true
-  },
-  parentId: {
-    type: Schema.Types.ObjectId,
-    ref: "AllCategories",
-    require: true
-  },
-  seller: {
-    type: Schema.Types.ObjectId,
-    ref: "Sellers",
-    default: null,
-    required: [true, "Seller is require"],
-  },
-  title: {
-    type: String,
-    required: [true, "Title is require"],
-  },
   sku: {
     type: String,
     required: [true, "SKU is require"],
-    unique: [true, "SKU must be unique"],
   },
   description: {
     type: String,
@@ -102,19 +106,13 @@ const ProductsSchema = new Schema({
     enum: ["Active", "Inactive", "Draft"],
     default: "Active",
   },
-  slug: {
-    type: String,
-    // unique: [true, "slug must be unique"],
-  },
-  productOtherDetails: [],
   feed_product_type: {
     type: String,
-  },
-  brand_name: {
-    type: String,
+    default: ""
   },
   external_product_id: {
     type: String,
+    default: ""
   },
   external_product_id_type: {
     type: String,
@@ -123,57 +121,96 @@ const ProductsSchema = new Schema({
   },
   part_number: {
     type: String,
+    default: ""
   },
   bullet_point: {
     type: [String],
   },
   max_shelf_life: {
     type: String,
+    default: ""
   },
   material_type_free: {
     type: [String],
   },
   material_composition: {
     type: String,
+    default: ""
   },
   is_waterproof: {
     type: Boolean,
+    default: false
   },
   manufacturer: {
     type: String,
+    default: ""
   },
   packer_details: {
     type: String,
+    default: ""
   },
   importer_details: {
     type: String,
+    default: ""
   },
   number_of_boxes: {
     type: String,
+    default: ""
   },
   country_of_origin: {
     type: String,
+    default: ""
   },
   product_information: {
     type: String,
+    default: ""
   },
   fulfillment_latency: {
     type: String,
+    default: ""
   },
   max_order_quantity: {
     type: String,
+    default: ""
   },
   safety_information: {
     type: String,
+    default: ""
   },
   indications: {
     type: String,
+    default: ""
   },
   directions: {
     type: String,
+    default: ""
   },
   legal_disclaimer: {
     type: String,
+    default: ""
+  },
+});
+
+const ProductsSchema = new Schema({
+  category: {
+    type: Schema.Types.ObjectId,
+    ref: "AllCategories",
+    require: true,
+  },
+  parentId: {
+    type: Schema.Types.ObjectId,
+    ref: "AllCategories",
+    require: true,
+  },
+  seller: {
+    type: Schema.Types.ObjectId,
+    ref: "Sellers",
+    default: null,
+    required: [true, "Seller is require"],
+  },
+  brand_name: {
+    type: String,
+    default: ""
   },
   variations1: {
     var_type: {

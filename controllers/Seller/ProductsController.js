@@ -30,62 +30,7 @@ exports.doAdd = async (req, res) => {
       category: productdata.category ? productdata.category : "",
       parentId: productdata.parentId ? productdata.parentId : "",
       seller: req.SellerAuth._id ? req.SellerAuth._id : "",
-      title: productdata.title ? productdata.title : "",
-      sku: productdata.sku ? productdata.sku : "",
-      description: productdata.description ? productdata.description : "",
-      status: productdata.status ? productdata.status : "",
-      productStatus: "Active",
-      slug: "",
       brand_name: productdata.brand_name ? productdata.brand_name : "",
-      external_product_id: productdata.external_product_id
-        ? productdata.external_product_id
-        : "",
-      external_product_id_type: productdata.external_product_id_type
-        ? productdata.external_product_id_type
-        : "",
-      part_number: productdata.part_number ? productdata.part_number : "",
-      bullet_point: productdata.bullet_point.length
-        ? productdata.bullet_point
-        : "",
-      max_shelf_life: productdata.max_shelf_life
-        ? productdata.max_shelf_life
-        : "",
-      material_type_free: productdata.material_type_free.length
-        ? productdata.material_type_free
-        : "",
-      material_composition: productdata.material_composition
-        ? productdata.material_composition
-        : "",
-      is_waterproof: productdata.is_waterproof
-        ? productdata.is_waterproof == "true"
-        : false,
-      manufacturer: productdata.manufacturer ? productdata.manufacturer : "",
-      packer_details: productdata.packer_details
-        ? productdata.packer_details
-        : "",
-      number_of_boxes: productdata.number_of_boxes
-        ? productdata.number_of_boxes
-        : "",
-      country_of_origin: productdata.country_of_origin
-        ? productdata.country_of_origin
-        : "",
-      product_information: productdata.product_information
-        ? productdata.product_information
-        : "",
-      fulfillment_latency: productdata.fulfillment_latency
-        ? productdata.fulfillment_latency
-        : "",
-      max_order_quantity: productdata.max_order_quantity
-        ? productdata.max_order_quantity
-        : "",
-      safety_information: productdata.safety_information
-        ? productdata.safety_information
-        : "",
-      indications: productdata.indications ? productdata.indications : "",
-      directions: productdata.directions ? productdata.directions : "",
-      legal_disclaimer: productdata.legal_disclaimer
-        ? productdata.legal_disclaimer
-        : "",
       variations1: {
         var_type: productdata.relationship_type1
           ? productdata.relationship_type1
@@ -110,6 +55,8 @@ exports.doAdd = async (req, res) => {
       },
       variations: [
         {
+          title: productdata.title ? productdata.title : "",
+          slug: "",
           banner:
             AllFiles.banner[0] && AllFiles.banner[0].filename
               ? `https://api.admincliq.com/temp/${AllFiles.banner[0].filename}`
@@ -180,12 +127,67 @@ exports.doAdd = async (req, res) => {
             discount_price_in_canada: "",
             discount_price_in_unitedstate: "",
           },
+          sku: productdata.sku ? productdata.sku : "",
+          description: productdata.description ? productdata.description : "",
+          status: productdata.status ? productdata.status : "",
+          productStatus: "Active",
+          external_product_id: productdata.external_product_id
+            ? productdata.external_product_id
+            : "",
+          external_product_id_type: productdata.external_product_id_type
+            ? productdata.external_product_id_type
+            : "",
+          part_number: productdata.part_number ? productdata.part_number : "",
+          bullet_point: productdata.bullet_point.length
+            ? productdata.bullet_point
+            : "",
+          max_shelf_life: productdata.max_shelf_life
+            ? productdata.max_shelf_life
+            : "",
+          material_type_free: productdata.material_type_free.length
+            ? productdata.material_type_free
+            : "",
+          material_composition: productdata.material_composition
+            ? productdata.material_composition
+            : "",
+          is_waterproof: productdata.is_waterproof
+            ? productdata.is_waterproof == "true"
+            : false,
+          manufacturer: productdata.manufacturer
+            ? productdata.manufacturer
+            : "",
+          packer_details: productdata.packer_details
+            ? productdata.packer_details
+            : "",
+          number_of_boxes: productdata.number_of_boxes
+            ? productdata.number_of_boxes
+            : "",
+          country_of_origin: productdata.country_of_origin
+            ? productdata.country_of_origin
+            : "",
+          product_information: productdata.product_information
+            ? productdata.product_information
+            : "",
+          fulfillment_latency: productdata.fulfillment_latency
+            ? productdata.fulfillment_latency
+            : "",
+          max_order_quantity: productdata.max_order_quantity
+            ? productdata.max_order_quantity
+            : "",
+          safety_information: productdata.safety_information
+            ? productdata.safety_information
+            : "",
+          indications: productdata.indications ? productdata.indications : "",
+          directions: productdata.directions ? productdata.directions : "",
+          legal_disclaimer: productdata.legal_disclaimer
+            ? productdata.legal_disclaimer
+            : "",
         },
       ],
     };
 
     if (productdata.title) {
-      newProduct.slug = slugify(productdata.title, {
+      productdata.variations[0].slug = slugify(productdata.title, {
         replacement: "-",
         remove: undefined,
         lower: true,
@@ -447,13 +449,11 @@ exports.doAddCSV = async (req, res) => {
     xlsxData.map((el) => {
       if (el.parent_child == "Parent") {
         let newObject = {};
+        let childrenObject = {};
         newObject["category"] = req.body.id;
         newObject["parentId"] = req.body.parentId;
         newObject["seller"] = req.SellerAuth._id;
-        newObject["status"] = "In stock";
-        newObject["productStatus"] = "Active";
-        newObject["material_type_free"] = [];
-        newObject["bullet_point"] = [];
+        newObject["variations"] = [];
         newObject["variations1"] = {
           var_type: "",
           var_theme_type: "",
@@ -464,8 +464,15 @@ exports.doAddCSV = async (req, res) => {
           var_theme_type: "",
           data: [],
         };
-        newObject["variations"] = [];
-        let childrenObject = {};
+
+        if (el.brand_name) {
+          newObject["brand_name"] = el.brand_name;
+        }
+
+        childrenObject["status"] = "In stock";
+        childrenObject["productStatus"] = "Active";
+        childrenObject["material_type_free"] = [];
+        childrenObject["bullet_point"] = [];
         childrenObject["images"] = [];
         childrenObject["dimensions"] = {};
         childrenObject["price"] = {};
@@ -481,23 +488,23 @@ exports.doAddCSV = async (req, res) => {
         };
 
         if (el.feed_product_type) {
-          newObject["feed_product_type"] = el.feed_product_type;
+          childrenObject["feed_product_type"] = el.feed_product_type;
         }
         if (el.sku) {
-          newObject["sku"] = el.sku;
+          childrenObject["sku"] = el.sku;
         }
-        if (el.brand_name) {
-          newObject["brand_name"] = el.brand_name;
+        if (el.quantity) {
+          childrenObject["quantity"] = el.quantity;
         }
         if (el.external_product_id) {
-          newObject["external_product_id"] = el.external_product_id;
+          childrenObject["external_product_id"] = el.external_product_id;
         }
         if (el.external_product_id_type) {
-          newObject["external_product_id_type"] = el.external_product_id_type;
+          childrenObject["external_product_id_type"] = el.external_product_id_type;
         }
         if (el.title) {
-          newObject["title"] = el.title;
-          newObject["slug"] = slugify(el.title, {
+          childrenObject["title"] = el.title;
+          childrenObject["slug"] = slugify(el.title, {
             replacement: "-",
             remove: undefined,
             lower: true,
@@ -507,88 +514,88 @@ exports.doAddCSV = async (req, res) => {
           });
         }
         if (el.part_number) {
-          newObject["part_number"] = el.part_number;
+          childrenObject["part_number"] = el.part_number;
         }
         if (el.description) {
-          newObject["description"] = el.description;
+          childrenObject["description"] = el.description;
         }
         if (el.part_number) {
-          newObject["part_number"] = el.part_number;
+          childrenObject["part_number"] = el.part_number;
         }
         if (el.bullet_point1) {
-          newObject["bullet_point"].push(el.bullet_point1);
+          childrenObject["bullet_point"].push(el.bullet_point1);
         }
         if (el.bullet_point2) {
-          newObject["bullet_point"].push(el.bullet_point2);
+          childrenObject["bullet_point"].push(el.bullet_point2);
         }
         if (el.bullet_point3) {
-          newObject["bullet_point"].push(el.bullet_point3);
+          childrenObject["bullet_point"].push(el.bullet_point3);
         }
         if (el.bullet_point4) {
-          newObject["bullet_point"].push(el.bullet_point4);
+          childrenObject["bullet_point"].push(el.bullet_point4);
         }
         if (el.bullet_point5) {
-          newObject["bullet_point"].push(el.bullet_point5);
+          childrenObject["bullet_point"].push(el.bullet_point5);
         }
         if (el.bullet_point5) {
-          newObject["bullet_point"].push(el.bullet_point6);
+          childrenObject["bullet_point"].push(el.bullet_point6);
         }
         if (el.bullet_point5) {
-          newObject["bullet_point"].push(el.bullet_point7);
+          childrenObject["bullet_point"].push(el.bullet_point7);
         }
         if (el.max_shelf_life) {
-          newObject["max_shelf_life"] = el.max_shelf_life;
+          childrenObject["max_shelf_life"] = el.max_shelf_life;
         }
         if (el.material_type_free1) {
-          newObject["material_type_free"].push(el.material_type_free1);
+          childrenObject["material_type_free"].push(el.material_type_free1);
         }
         if (el.material_type_free2) {
-          newObject["material_type_free"].push(el.material_type_free2);
+          childrenObject["material_type_free"].push(el.material_type_free2);
         }
         if (el.material_type_free3) {
-          newObject["material_type_free"].push(el.material_type_free3);
+          childrenObject["material_type_free"].push(el.material_type_free3);
         }
         if (el.material_composition) {
-          newObject["material_composition"] = el.material_composition;
+          childrenObject["material_composition"] = el.material_composition;
         }
         if (el.is_waterproof) {
-          newObject["is_waterproof"] = el.is_waterproof == "true";
+          childrenObject["is_waterproof"] = el.is_waterproof == "true";
         }
         if (el.manufacturer) {
-          newObject["manufacturer"] = el.manufacturer;
+          childrenObject["manufacturer"] = el.manufacturer;
         }
         if (el.packer_details) {
-          newObject["packer_details"] = el.packer_details;
+          childrenObject["packer_details"] = el.packer_details;
         }
         if (el.importer_details) {
-          newObject["importer_details"] = el.importer_details;
+          childrenObject["importer_details"] = el.importer_details;
         }
         if (el.number_of_boxes) {
-          newObject["number_of_boxes"] = el.number_of_boxes;
+          childrenObject["number_of_boxes"] = el.number_of_boxes;
         }
         if (el.country_of_origin) {
-          newObject["country_of_origin"] = el.country_of_origin;
+          childrenObject["country_of_origin"] = el.country_of_origin;
         }
         if (el.product_information) {
-          newObject["product_information"] = el.product_information;
+          childrenObject["product_information"] = el.product_information;
         }
         if (el.fulfillment_latency) {
-          newObject["fulfillment_latency"] = el.fulfillment_latency;
+          childrenObject["fulfillment_latency"] = el.fulfillment_latency;
         }
         if (el.max_order_quantity) {
-          newObject["max_order_quantity"] = el.max_order_quantity;
+          childrenObject["max_order_quantity"] = el.max_order_quantity;
         }
         if (el.safety_information) {
-          newObject["safety_information"] = el.safety_information;
+          childrenObject["safety_information"] = el.safety_information;
         }
         if (el.indications) {
-          newObject["indications"] = el.indications;
+          childrenObject["indications"] = el.indications;
         }
         if (el.directions) {
-          newObject["directions"] = el.directions;
+          childrenObject["directions"] = el.directions;
         }
         if (el.legal_disclaimer) {
-          newObject["legal_disclaimer"] = el.legal_disclaimer;
+          childrenObject["legal_disclaimer"] = el.legal_disclaimer;
         }
         if (
           el.relationship_type1 &&
@@ -762,12 +769,123 @@ exports.doAddCSV = async (req, res) => {
         let parentEle = newProducts[newProducts.length - 1];
         let childrenObject = {};
 
+        childrenObject["status"] = "In stock";
+        childrenObject["productStatus"] = "Active";
+        childrenObject["material_type_free"] = [];
+        childrenObject["bullet_point"] = [];
         childrenObject["images"] = [];
         childrenObject["dimensions"] = {};
         childrenObject["price"] = {};
         childrenObject["sellingPrice"] = {};
         childrenObject["discount"] = {};
-        
+        if (el.feed_product_type) {
+          childrenObject["feed_product_type"] = el.feed_product_type;
+        }
+        if (el.sku) {
+          childrenObject["sku"] = el.sku;
+        }
+        if (el.external_product_id) {
+          childrenObject["external_product_id"] = el.external_product_id;
+        }
+        if (el.external_product_id_type) {
+          childrenObject["external_product_id_type"] = el.external_product_id_type;
+        }
+        if (el.title) {
+          childrenObject["title"] = el.title;
+          childrenObject["slug"] = slugify(el.title, {
+            replacement: "-",
+            remove: undefined,
+            lower: true,
+            strict: false,
+            locale: "vi",
+            trim: true,
+          });
+        }
+        if (el.part_number) {
+          childrenObject["part_number"] = el.part_number;
+        }
+        if (el.description) {
+          childrenObject["description"] = el.description;
+        }
+        if (el.part_number) {
+          childrenObject["part_number"] = el.part_number;
+        }
+        if (el.bullet_point1) {
+          childrenObject["bullet_point"].push(el.bullet_point1);
+        }
+        if (el.bullet_point2) {
+          childrenObject["bullet_point"].push(el.bullet_point2);
+        }
+        if (el.bullet_point3) {
+          childrenObject["bullet_point"].push(el.bullet_point3);
+        }
+        if (el.bullet_point4) {
+          childrenObject["bullet_point"].push(el.bullet_point4);
+        }
+        if (el.bullet_point5) {
+          childrenObject["bullet_point"].push(el.bullet_point5);
+        }
+        if (el.bullet_point5) {
+          childrenObject["bullet_point"].push(el.bullet_point6);
+        }
+        if (el.bullet_point5) {
+          childrenObject["bullet_point"].push(el.bullet_point7);
+        }
+        if (el.max_shelf_life) {
+          childrenObject["max_shelf_life"] = el.max_shelf_life;
+        }
+        if (el.material_type_free1) {
+          childrenObject["material_type_free"].push(el.material_type_free1);
+        }
+        if (el.material_type_free2) {
+          childrenObject["material_type_free"].push(el.material_type_free2);
+        }
+        if (el.material_type_free3) {
+          childrenObject["material_type_free"].push(el.material_type_free3);
+        }
+        if (el.material_composition) {
+          childrenObject["material_composition"] = el.material_composition;
+        }
+        if (el.is_waterproof) {
+          childrenObject["is_waterproof"] = el.is_waterproof == "true";
+        }
+        if (el.manufacturer) {
+          childrenObject["manufacturer"] = el.manufacturer;
+        }
+        if (el.packer_details) {
+          childrenObject["packer_details"] = el.packer_details;
+        }
+        if (el.importer_details) {
+          childrenObject["importer_details"] = el.importer_details;
+        }
+        if (el.number_of_boxes) {
+          childrenObject["number_of_boxes"] = el.number_of_boxes;
+        }
+        if (el.country_of_origin) {
+          childrenObject["country_of_origin"] = el.country_of_origin;
+        }
+        if (el.product_information) {
+          childrenObject["product_information"] = el.product_information;
+        }
+        if (el.fulfillment_latency) {
+          childrenObject["fulfillment_latency"] = el.fulfillment_latency;
+        }
+        if (el.max_order_quantity) {
+          childrenObject["max_order_quantity"] = el.max_order_quantity;
+        }
+        if (el.safety_information) {
+          childrenObject["safety_information"] = el.safety_information;
+        }
+        if (el.indications) {
+          childrenObject["indications"] = el.indications;
+        }
+        if (el.directions) {
+          childrenObject["directions"] = el.directions;
+        }
+        if (el.legal_disclaimer) {
+          childrenObject["legal_disclaimer"] = el.legal_disclaimer;
+        }
+
         if (
           el.variation_theme1 != parentEle["variations1"].var_theme_type &&
           el.variation_theme2 != parentEle["variations2"].var_theme_type
@@ -949,7 +1067,7 @@ exports.doAddCSV = async (req, res) => {
     if (!newProducts.length) {
       throw new Error("Please add atleast one product in file");
     }
-    // await newProducts
+
     let addNewProducts = await Product.insertMany(newProducts);
 
     res.status(200).json({
@@ -978,13 +1096,45 @@ exports.doUpdate = async (req, res) => {
         throw new Error("Product Not Found");
       }
       let updateData = Object.assign({}, checkProduct._doc);
+      updateData.brand_name = productdata.brand_name;
 
-      updateData.title = productdata.title;
-      updateData.sku = productdata.sku;
-      updateData.description = productdata.description;
-      updateData.status = productdata.status;
-      updateData.productStatus = productdata.productStatus;
-      updateData.slug = slugify(productdata.title, {
+      let findVarient = checkProduct.variations.find((el) => {
+        return el._id.equals(productdata.varientId);
+      });
+
+      let updateVarient = Object.assign({}, findVarient._doc);
+
+      updateVarient.sku = productdata.sku;
+      updateVarient.description = productdata.description;
+      updateVarient.status = productdata.status;
+      updateVarient.productStatus = productdata.productStatus;
+      updateVarient.feed_product_type = productdata.feed_product_type;
+      updateVarient.external_product_id = productdata.external_product_id;
+      updateVarient.external_product_id_type =
+        productdata.external_product_id_type;
+      updateVarient.part_number = productdata.part_number;
+      updateVarient.bullet_point = productdata.bullet_point;
+      updateVarient.max_shelf_life = productdata.max_shelf_life;
+      updateVarient.material_type_free = productdata.material_type_free;
+      updateVarient.material_composition = productdata.material_composition;
+      updateVarient.is_waterproof = productdata.is_waterproof
+        ? productdata.is_waterproof == "true"
+        : false;
+      updateVarient.manufacturer = productdata.manufacturer;
+      updateVarient.packer_details = productdata.packer_details;
+      updateVarient.importer_details = productdata.importer_details;
+      updateVarient.number_of_boxes = productdata.number_of_boxes;
+      updateVarient.country_of_origin = productdata.country_of_origin;
+      updateVarient.product_information = productdata.product_information;
+      updateVarient.fulfillment_latency = productdata.fulfillment_latency;
+      updateVarient.max_order_quantity = productdata.max_order_quantity;
+      updateVarient.safety_information = productdata.safety_information;
+      updateVarient.indications = productdata.indications;
+      updateVarient.directions = productdata.directions;
+      updateVarient.legal_disclaimer = productdata.legal_disclaimer;
+
+      updateVarient.title = productdata.title;
+      updateVarient.slug = slugify(productdata.title, {
         replacement: "-",
         remove: undefined,
         lower: true,
@@ -992,38 +1142,6 @@ exports.doUpdate = async (req, res) => {
         locale: "vi",
         trim: true,
       });
-      updateData.feed_product_type = productdata.feed_product_type;
-      updateData.brand_name = productdata.brand_name;
-      updateData.external_product_id = productdata.external_product_id;
-      updateData.external_product_id_type =
-        productdata.external_product_id_type;
-      updateData.part_number = productdata.part_number;
-      updateData.bullet_point = productdata.bullet_point;
-      updateData.max_shelf_life = productdata.max_shelf_life;
-      updateData.material_type_free = productdata.material_type_free;
-      updateData.material_composition = productdata.material_composition;
-      updateData.is_waterproof = productdata.is_waterproof
-        ? productdata.is_waterproof == "true"
-        : false;
-      updateData.manufacturer = productdata.manufacturer;
-      updateData.packer_details = productdata.packer_details;
-      updateData.importer_details = productdata.importer_details;
-      updateData.number_of_boxes = productdata.number_of_boxes;
-      updateData.country_of_origin = productdata.country_of_origin;
-      updateData.product_information = productdata.product_information;
-      updateData.fulfillment_latency = productdata.fulfillment_latency;
-      updateData.max_order_quantity = productdata.max_order_quantity;
-      updateData.safety_information = productdata.safety_information;
-      updateData.indications = productdata.indications;
-      updateData.directions = productdata.directions;
-      updateData.legal_disclaimer = productdata.legal_disclaimer;
-
-      let findVarient = checkProduct.variations.find(
-        (el) => {
-          return el._id.equals(productdata.varientId)
-        })
-
-      let updateVarient = Object.assign({}, findVarient._doc);
 
       updateVarient.variation1 = {
         var_title: productdata.variation_theme1
@@ -1050,9 +1168,7 @@ exports.doUpdate = async (req, res) => {
         ? productdata.quantity * 1
         : 0;
 
-        updateVarient.Colour = productdata.Colour
-        ? productdata.Colour
-        : "";
+      updateVarient.Colour = productdata.Colour ? productdata.Colour : "";
 
       if (AllFiles && AllFiles.images && AllFiles.images.length) {
         let productImages = [];
@@ -1214,14 +1330,14 @@ exports.doUpdate = async (req, res) => {
           100;
       }
 
-      let allVariations = [...checkProduct.variations]
+      let allVariations = [...checkProduct.variations];
       let checkIndex = allVariations.findIndex((el, i) => {
         return el._id == updateVarient._id;
-      })
+      });
 
-      if(checkIndex > -1){
-        allVariations[checkIndex] = updateVarient
-        updateData['variations'] = allVariations;
+      if (checkIndex > -1) {
+        allVariations[checkIndex] = updateVarient;
+        updateData["variations"] = allVariations;
       }
 
       if (updateData && updateData.variations && updateData.variations.length) {
@@ -1239,13 +1355,15 @@ exports.doUpdate = async (req, res) => {
           }
         });
 
-        updateData.variations1['data'] = val1Array;
-        updateData.variations2['data'] = val2Array;
+        updateData.variations1["data"] = val1Array;
+        updateData.variations2["data"] = val2Array;
       }
 
-      let updatedateArray = await Product.findByIdAndUpdate(productdata._id, {...updateData});
+      let updatedateArray = await Product.findByIdAndUpdate(productdata._id, {
+        ...updateData,
+      });
 
-      return _.res(res, {...updatedateArray}, 200);
+      return _.res(res, { ...updatedateArray }, 200);
     }
 
     _.res(res, updateVarient, 200);
