@@ -52,6 +52,6 @@ exports.getBrands = async (req, res) => {
 
         _.res(res, brands, 200)
     } catch (error) {
-        _.res(res, error.message, 404)
+        res.status(404).json({message: error.message})
     }
 }

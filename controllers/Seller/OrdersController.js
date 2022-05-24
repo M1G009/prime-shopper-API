@@ -55,7 +55,7 @@ exports.getOrders = async (req, res) => {
 
         _.res(res, sellerByOrder, 200)
     } catch (error) {
-        _.res(res, error.message, 404)
+        res.status(404).json({message: error.message})
     }
 }
 
@@ -87,7 +87,7 @@ exports.getOrder = async (req, res) => {
         _.res(res, order, 200)
 
     } catch (error) {
-        _.res(res, error.message, 404)
+        res.status(404).json({message: error.message})
     }
 }
 
@@ -134,6 +134,6 @@ exports.updateOrder = async (req, res) => {
         });
 
     } catch (error) {
-        _.res(res, error.message, 404)
+        res.status(404).json({message: error.message})
     }
 }

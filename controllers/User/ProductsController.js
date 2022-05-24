@@ -53,7 +53,7 @@ exports.getProducts = async (req, res) => {
 
     _.res(res, products, 200);
   } catch (error) {
-    _.res(res, error.message, 404);
+    res.status(404).json({message: error.message});
   }
 };
 
@@ -85,7 +85,7 @@ exports.getProduct = async (req, res) => {
 
     _.res(res, product, 200);
   } catch (error) {
-    _.res(res, error.message, 404);
+    res.status(404).json({message: error.message});
   }
 };
 
@@ -157,7 +157,7 @@ exports.addToCart = async (req, res) => {
       _.res(res, updatedCart, 200);
     }
   } catch (error) {
-    _.res(res, error.message, 404);
+    res.status(404).json({message: error.message});
   }
 };
 
@@ -196,7 +196,7 @@ exports.cart = async (req, res) => {
 
     _.res(res, {cart, cartIds}, 200);
   } catch (error) {
-    _.res(res, error.message, 404);
+    res.status(404).json({message: error.message});
   }
 };
 
@@ -209,7 +209,7 @@ exports.removeFromCart = async (req, res) => {
     var updatedCart = await CartModal.findByIdAndDelete(conditions._id)
     _.res(res, updatedCart, 200);
   } catch (error) {
-    _.res(res, error.message, 404);
+    res.status(404).json({message: error.message});
   }
 };
 
@@ -231,7 +231,7 @@ exports.allProductsRemoveFromCart = async (req, res) => {
 
     _.res(res, "Successfully Empty cart", 200);
   } catch (error) {
-    _.res(res, error.message, 404);
+    res.status(404).json({message: error.message});
   }
 };
 
@@ -266,7 +266,7 @@ exports.addToFavorite = async (req, res) => {
       _.res(res, "Removed from favorites", 200);
     }
   } catch (error) {
-    _.res(res, error.message, 404);
+    res.status(404).json({message: error.message});
   }
 };
 
@@ -310,7 +310,7 @@ exports.Favorites = async (req, res) => {
 
     _.res(res, favorites, 200);
   } catch (error) {
-    _.res(res, error.message, 404);
+    res.status(404).json({message: error.message});
   }
 };
 
@@ -345,7 +345,7 @@ exports.getProductByCategory = async (req, res) => {
 
     _.res(res, productByCategory, 200);
   } catch (error) {
-    _.res(res, error.message, 404);
+    res.status(404).json({message: error.message});
   }
 };
 
@@ -371,6 +371,6 @@ exports.productFormsFiled = async (req, res) => {
 
     _.res(res, productFormsFiled, 200);
   } catch (error) {
-    _.res(res, error.message, 404);
+    res.status(404).json({message: error.message});
   }
 };

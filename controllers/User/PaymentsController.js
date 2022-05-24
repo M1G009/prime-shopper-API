@@ -194,7 +194,7 @@ exports.createPayment = async (req, res) => {
 
     // res.json({ data: req.body });
   } catch (error) {
-    _.res(res, error.message, 404);
+    res.status(404).json({message: error.message});
   }
 };
 
@@ -217,7 +217,7 @@ exports.getPayment = async (req, res) => {
 
     _.res(res, payment, 200);
   } catch (error) {
-    _.res(res, error.message, 404);
+    res.status(404).json({message: error.message});
   }
 };
 
@@ -257,6 +257,6 @@ exports.getPayments = async (req, res) => {
 
     _.res(res, payments, 200);
   } catch (error) {
-    _.res(res, error.message, 404);
+    res.status(404).json({message: error.message});
   }
 };
