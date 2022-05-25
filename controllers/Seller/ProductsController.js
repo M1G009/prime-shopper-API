@@ -331,7 +331,7 @@ exports.doAdd = async (req, res) => {
 
     _.res(res, addProduct, 200);
   } catch (error) {
-    _.res(res, error.message, 404);
+    res.status(404).json({message: error.message});
   }
 };
 
@@ -1368,7 +1368,7 @@ exports.doUpdate = async (req, res) => {
 
     _.res(res, updateVarient, 200);
   } catch (error) {
-    _.res(res, error.message, 404);
+    res.status(404).json({message: error.message});
   }
 };
 
@@ -1402,7 +1402,7 @@ exports.getProduct = async (req, res) => {
 
     _.res(res, product, 200);
   } catch (error) {
-    _.res(res, error.message, 404);
+    res.status(404).json({message: error.message});
   }
 };
 
@@ -1471,7 +1471,7 @@ exports.getProducts = async (req, res) => {
 
     _.res(res, product, 200);
   } catch (error) {
-    _.res(res, error.message, 404);
+    res.status(404).json({message: error.message});
   }
 };
 
@@ -1491,7 +1491,7 @@ exports.removeProduct = async (req, res) => {
 
     _.res(res, "Product removed successfully", 200);
   } catch (error) {
-    _.res(res, error.message, 404);
+    res.status(404).json({message: error.message});
   }
 };
 

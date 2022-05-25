@@ -3,6 +3,7 @@ const CategoryController = require('../controllers/CategoriesController')
 const UserProductController = require('../controllers/User/ProductsController')
 const UserPaymentController = require('../controllers/User/PaymentsController')
 const UserOrderController = require('../controllers/User/OrdersController')
+const HomeOffersController = require('../controllers/HomeOffersController')
 const FaqController = require('../controllers/Faq')
 
 const router = new express.Router();
@@ -16,6 +17,9 @@ router.post('/user/change/password', auth, UserController.changePassword)
 router.post('/user/forgot/password', UserController.sendOTP)
 router.post('/user/reset/password', UserController.resetPassword)
 router.post('/user/statistics', auth, UserController.UserStatistics)
+
+//Home Page Sliders API
+router.get('/homepagesliders', HomeOffersController.getAllSliders)
 
 //Category 
 router.post('/category', CategoryController.getCategory)
@@ -91,7 +95,7 @@ async function auth(req, res, next) {
         next();
 
     } catch (error) {
-        _.res(res, error.message, 401);
+        res.status(404).json({message: error.message})
     }
 }
 

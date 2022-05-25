@@ -1,6 +1,7 @@
 const CategoriesController = require('../controllers/Admin/CategoriesController')
 const CourierController = require('../controllers/Admin/Courier')
 const FaqController = require('../controllers/Faq')
+const HomeOffersController = require('../controllers/HomeOffersController')
 
 const router = new express.Router();
 
@@ -11,6 +12,14 @@ const router = new express.Router();
 // router.post('/change/password', auth, SellerController.changePassword)
 // router.post('/forgot/password', SellerController.sendOTP)
 // router.post('/reset/password', SellerController.resetPassword)
+
+//Home Page Sliders API
+router.post('/updateWelcomeOffers', IMAGE_STORAGE.fields([{ name: 'image', maxCount: 1 }]), HomeOffersController.updateWelcomeOffers)
+router.post('/updateBigOfferSlider', IMAGE_STORAGE.fields([{ name: 'image', maxCount: 1 }]), HomeOffersController.updateBigOfferSlider)
+router.post('/updateTopSelectedBrandSlider', IMAGE_STORAGE.fields([{ name: 'image', maxCount: 1 }]), HomeOffersController.updateTopSelectedBrandSlider)
+router.post('/updateBestSellerSlider', IMAGE_STORAGE.fields([{ name: 'image', maxCount: 1 }]), HomeOffersController.updateBestSellerSlider)
+router.post('/updateBestSellingProductSlider', IMAGE_STORAGE.fields([{ name: 'image', maxCount: 1 }]), HomeOffersController.updateBestSellingProductSlider)
+router.post('/updateNewArrivalSlider', IMAGE_STORAGE.fields([{ name: 'image', maxCount: 1 }]), HomeOffersController.updateNewArrivalSlider)
 
 // Categories
 router.get('/categories', CategoriesController.getCategories)

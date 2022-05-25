@@ -43,7 +43,7 @@ exports.getChats = async (req, res) => {
       _.res(res, chats, 200)
 
    } catch (error) {
-      _.res(res, error.message, 404)
+      res.status(404).json({message: error.message})
    }
 }
 
@@ -60,6 +60,6 @@ exports.conversion = async (req, res) => {
       _.res(res, chats, 200)
 
    } catch (error) {
-      _.res(res, error.message, 404)
+      res.status(404).json({message: error.message})
    }
 }

@@ -13,7 +13,7 @@ exports.register = async (req, res) => {
         _.res(res, user, 200)
 
     } catch (error) {
-        _.res(res, error.message, 404)
+        res.status(404).json({message: error.message})
     }
 }
 
@@ -36,7 +36,7 @@ exports.doLogin = async (req, res) => {
         _.res(res, await _.authResponse(user, userToken), 200)
 
     } catch (error) {
-        _.res(res, error.message, 404)
+        res.status(404).json({message: error.message})
     }
 }
 
@@ -63,7 +63,7 @@ exports.updateProfile = async (req, res) => {
 
         _.res(res, updatedProfile, 200)
     } catch (error) {
-        _.res(res, error.message, 404)
+        res.status(404).json({message: error.message})
     }
 }
 
@@ -77,7 +77,7 @@ exports.getProfile = async (req, res) => {
 
         _.res(res, user, 200)
     } catch (error) {
-        _.res(res, error.message, 404)
+        res.status(404).json({message: error.message})
     }
 }
 
@@ -109,7 +109,7 @@ exports.changePassword = async (req, res) => {
             throw new Error('Old Password is Required');
         }
     } catch (error) {
-        _.res(res, error.message, 404);
+        res.status(404).json({message: error.message});
     }
 }
 
@@ -148,7 +148,7 @@ exports.sendOTP = async (req, res) => {
 
         _.res(res, { id: addOTP.user }, 200)
     } catch (error) {
-        _.res(res, error.message, 404);
+        res.status(404).json({message: error.message});
     }
 }
 
@@ -183,7 +183,7 @@ exports.resetPassword = async (req, res) => {
         }
 
     } catch (error) {
-        _.res(res, error.message, 404);
+        res.status(404).json({message: error.message});
     }
 }
 
@@ -221,6 +221,6 @@ exports.UserStatistics = async (req, res) => {
 
         _.res(res, { userOrders, totalAmount, totalTransaction }, 200)
     } catch (error) {
-        _.res(res, error.message, 404);
+        res.status(404).json({message: error.message});
     }
 }
