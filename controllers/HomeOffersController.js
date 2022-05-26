@@ -55,8 +55,8 @@ exports.updateWelcomeOffers = async (req, res) => {
       if (req.body.redirectLink) {
         updatedata["redirectLink"] = req.body.redirectLink;
       }
-      if (req.files.image && req.files.image.length) {
-        updatedata["image"] = req.files.image[0].filename;
+      if (req.file) {
+        updatedata["image"] = req.file.filename;
       }
       const welcomeOffersData = await welcomeOffers.findByIdAndUpdate(
         req.body.id,
@@ -71,8 +71,8 @@ exports.updateWelcomeOffers = async (req, res) => {
       if (req.body.redirectLink) {
         updatedata["redirectLink"] = req.body.redirectLink;
       }
-      if (req.files.image && req.files.image.length) {
-        updatedata["image"] = req.files.image[0].filename;
+      if (req.file) {
+        updatedata["image"] = req.file.filename;
       }
       const welcomeOffersData = await welcomeOffers.create(updatedata);
       res.status(200).json({
@@ -95,8 +95,8 @@ exports.updateBigOfferSlider = async (req, res) => {
       if (req.body.uptoOff) {
         updatedata["uptoOff"] = req.body.uptoOff;
       }
-      if (req.files.image && req.files.image.length) {
-        updatedata["image"] = req.files.image[0].filename;
+      if (req.file) {
+        updatedata["image"] = req.file.filename;
       }
       const bigOfferSliderData = await bigOfferSlider.findByIdAndUpdate(
         req.body.id,
@@ -114,8 +114,8 @@ exports.updateBigOfferSlider = async (req, res) => {
       if (req.body.uptoOff) {
         updatedata["uptoOff"] = req.body.uptoOff;
       }
-      if (req.files.image && req.files.image.length) {
-        updatedata["image"] = req.files.image[0].filename;
+      if (req.file) {
+        updatedata["image"] = req.file.filename;
       }
       const bigOfferSliderData = await bigOfferSlider.create(updatedata);
       res.status(200).json({
@@ -135,13 +135,11 @@ exports.updateTopSelectedBrandSlider = async (req, res) => {
       if (req.body.redirectLink) {
         updatedata["redirectLink"] = req.body.redirectLink;
       }
-      if (req.files.image && req.files.image.length) {
-        updatedata["image"] = req.files.image[0].filename;
+      if (req.file) {
+        updatedata["image"] = req.file.filename;
       }
-      const topSelectedBrandSliderData = await topSelectedBrandSlider.findByIdAndUpdate(
-        req.body.id,
-        updatedata
-      );
+      const topSelectedBrandSliderData =
+        await topSelectedBrandSlider.findByIdAndUpdate(req.body.id, updatedata);
       res.status(200).json({
         status: "success",
         data: topSelectedBrandSliderData,
@@ -151,10 +149,12 @@ exports.updateTopSelectedBrandSlider = async (req, res) => {
       if (req.body.redirectLink) {
         updatedata["redirectLink"] = req.body.redirectLink;
       }
-      if (req.files.image && req.files.image.length) {
-        updatedata["image"] = req.files.image[0].filename;
+      if (req.file) {
+        updatedata["image"] = req.file.filename;
       }
-      const topSelectedBrandSliderData = await topSelectedBrandSlider.create(updatedata);
+      const topSelectedBrandSliderData = await topSelectedBrandSlider.create(
+        updatedata
+      );
       res.status(200).json({
         status: "success",
         data: topSelectedBrandSliderData,
@@ -178,8 +178,8 @@ exports.updateBestSellerSlider = async (req, res) => {
       if (req.body.uptoOff) {
         updatedata["uptoOff"] = req.body.uptoOff;
       }
-      if (req.files.image && req.files.image.length) {
-        updatedata["image"] = req.files.image[0].filename;
+      if (req.file) {
+        updatedata["image"] = req.file.filename;
       }
       const bestSellerSliderData = await bestSellerSlider.findByIdAndUpdate(
         req.body.id,
@@ -200,8 +200,8 @@ exports.updateBestSellerSlider = async (req, res) => {
       if (req.body.uptoOff) {
         updatedata["uptoOff"] = req.body.uptoOff;
       }
-      if (req.files.image && req.files.image.length) {
-        updatedata["image"] = req.files.image[0].filename;
+      if (req.file) {
+        updatedata["image"] = req.file.filename;
       }
       const bestSellerSliderData = await bestSellerSlider.create(updatedata);
       res.status(200).json({
@@ -221,13 +221,14 @@ exports.updateBestSellingProductSlider = async (req, res) => {
       if (req.body.redirectLink) {
         updatedata["redirectLink"] = req.body.redirectLink;
       }
-      if (req.files.image && req.files.image.length) {
-        updatedata["image"] = req.files.image[0].filename;
+      if (req.file) {
+        updatedata["image"] = req.file.filename;
       }
-      const bestSellingProductSliderData = await bestSellingProductSlider.findByIdAndUpdate(
-        req.body.id,
-        updatedata
-      );
+      const bestSellingProductSliderData =
+        await bestSellingProductSlider.findByIdAndUpdate(
+          req.body.id,
+          updatedata
+        );
       res.status(200).json({
         status: "success",
         data: bestSellingProductSliderData,
@@ -237,10 +238,11 @@ exports.updateBestSellingProductSlider = async (req, res) => {
       if (req.body.redirectLink) {
         updatedata["redirectLink"] = req.body.redirectLink;
       }
-      if (req.files.image && req.files.image.length) {
-        updatedata["image"] = req.files.image[0].filename;
+      if (req.file) {
+        updatedata["image"] = req.file.filename;
       }
-      const bestSellingProductSliderData = await bestSellingProductSlider.create(updatedata);
+      const bestSellingProductSliderData =
+        await bestSellingProductSlider.create(updatedata);
       res.status(200).json({
         status: "success",
         data: bestSellingProductSliderData,
@@ -258,8 +260,8 @@ exports.updateNewArrivalSlider = async (req, res) => {
       if (req.body.redirectLink) {
         updatedata["redirectLink"] = req.body.redirectLink;
       }
-      if (req.files.image && req.files.image.length) {
-        updatedata["image"] = req.files.image[0].filename;
+      if (req.file) {
+        updatedata["image"] = req.file.filename;
       }
       const newArrivalSliderData = await newArrivalSlider.findByIdAndUpdate(
         req.body.id,
@@ -274,8 +276,8 @@ exports.updateNewArrivalSlider = async (req, res) => {
       if (req.body.redirectLink) {
         updatedata["redirectLink"] = req.body.redirectLink;
       }
-      if (req.files.image && req.files.image.length) {
-        updatedata["image"] = req.files.image[0].filename;
+      if (req.file) {
+        updatedata["image"] = req.file.filename;
       }
       const newArrivalSliderData = await newArrivalSlider.create(updatedata);
       res.status(200).json({
@@ -287,3 +289,94 @@ exports.updateNewArrivalSlider = async (req, res) => {
     res.status(404).json({ message: error.message });
   }
 };
+
+exports.deleteWelcomeOffers = async (req, res) => {
+  try {
+    if (!req.body.id) {
+      throw new Error("Please provide valid Id");
+    }
+    const welcomeOffersData = await welcomeOffers.findByIdAndDelete(req.body.id)
+    res.status(200).json({
+      status: "success",
+      data: welcomeOffersData,
+    });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
+exports.deleteBigOfferSlider = async (req, res) => {
+  try {
+    if (!req.body.id) {
+      throw new Error("Please provide valid Id");
+    }
+    const bigOfferSliderData = await bigOfferSlider.findByIdAndDelete(req.body.id)
+    res.status(200).json({
+      status: "success",
+      data: bigOfferSliderData,
+    });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
+exports.deleteTopSelectedBrandSlider = async (req, res) => {
+  try {
+    if (!req.body.id) {
+      throw new Error("Please provide valid Id");
+    }
+    const topSelectedBrandSliderData = await topSelectedBrandSlider.findByIdAndDelete(req.body.id)
+    res.status(200).json({
+      status: "success",
+      data: topSelectedBrandSliderData,
+    });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
+exports.deleteBestSellerSlider = async (req, res) => {
+  try {
+    if (!req.body.id) {
+      throw new Error("Please provide valid Id");
+    }
+    const bestSellerSliderData = await bestSellerSlider.findByIdAndDelete(req.body.id)
+    res.status(200).json({
+      status: "success",
+      data: bestSellerSliderData,
+    });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
+exports.deleteBestSellingProductSlider = async (req, res) => {
+  try {
+    if (!req.body.id) {
+      throw new Error("Please provide valid Id");
+    }
+    const bestSellingProductSliderData = await bestSellingProductSlider.findByIdAndDelete(req.body.id)
+    res.status(200).json({
+      status: "success",
+      data: bestSellingProductSliderData,
+    });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
+exports.deleteNewArrivalSlider = async (req, res) => {
+  try {
+    if (!req.body.id) {
+      throw new Error("Please provide valid Id");
+    }
+    const newArrivalSliderData = await newArrivalSlider.findByIdAndDelete(req.body.id)
+    res.status(200).json({
+      status: "success",
+      data: newArrivalSliderData,
+    });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+

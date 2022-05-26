@@ -14,12 +14,19 @@ const router = new express.Router();
 // router.post('/reset/password', SellerController.resetPassword)
 
 //Home Page Sliders API
-router.post('/updateWelcomeOffers', IMAGE_STORAGE.fields([{ name: 'image', maxCount: 1 }]), HomeOffersController.updateWelcomeOffers)
-router.post('/updateBigOfferSlider', IMAGE_STORAGE.fields([{ name: 'image', maxCount: 1 }]), HomeOffersController.updateBigOfferSlider)
-router.post('/updateTopSelectedBrandSlider', IMAGE_STORAGE.fields([{ name: 'image', maxCount: 1 }]), HomeOffersController.updateTopSelectedBrandSlider)
-router.post('/updateBestSellerSlider', IMAGE_STORAGE.fields([{ name: 'image', maxCount: 1 }]), HomeOffersController.updateBestSellerSlider)
-router.post('/updateBestSellingProductSlider', IMAGE_STORAGE.fields([{ name: 'image', maxCount: 1 }]), HomeOffersController.updateBestSellingProductSlider)
-router.post('/updateNewArrivalSlider', IMAGE_STORAGE.fields([{ name: 'image', maxCount: 1 }]), HomeOffersController.updateNewArrivalSlider)
+router.post('/updateWelcomeOffers', IMAGE_STORAGE.single('image'), HomeOffersController.updateWelcomeOffers)
+router.post('/updateBigOfferSlider', IMAGE_STORAGE.single('image'), HomeOffersController.updateBigOfferSlider)
+router.post('/updateTopSelectedBrandSlider', IMAGE_STORAGE.single('image'), HomeOffersController.updateTopSelectedBrandSlider)
+router.post('/updateBestSellerSlider', IMAGE_STORAGE.single('image'), HomeOffersController.updateBestSellerSlider)
+router.post('/updateBestSellingProductSlider', IMAGE_STORAGE.single('image'), HomeOffersController.updateBestSellingProductSlider)
+router.post('/updateNewArrivalSlider', IMAGE_STORAGE.single('image'), HomeOffersController.updateNewArrivalSlider)
+
+router.post('/deleteWelcomeOffers', HomeOffersController.deleteWelcomeOffers)
+router.post('/deleteBigOfferSlider', HomeOffersController.deleteBigOfferSlider)
+router.post('/deleteTopSelectedBrandSlider', HomeOffersController.deleteTopSelectedBrandSlider)
+router.post('/deleteBestSellerSlider', HomeOffersController.deleteBestSellerSlider)
+router.post('/deleteBestSellingProductSlider', HomeOffersController.deleteBestSellingProductSlider)
+router.post('/deleteNewArrivalSlider', HomeOffersController.deleteNewArrivalSlider)
 
 // Categories
 router.get('/categories', CategoriesController.getCategories)
