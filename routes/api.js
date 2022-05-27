@@ -4,6 +4,7 @@ const UserProductController = require('../controllers/User/ProductsController')
 const UserPaymentController = require('../controllers/User/PaymentsController')
 const UserOrderController = require('../controllers/User/OrdersController')
 const HomeOffersController = require('../controllers/HomeOffersController')
+const SubOffersController = require('../controllers/SubOffersController')
 const FaqController = require('../controllers/Faq')
 
 const router = new express.Router();
@@ -20,6 +21,8 @@ router.post('/user/statistics', auth, UserController.UserStatistics)
 
 //Home Page Sliders API
 router.get('/homepagesliders', HomeOffersController.getAllSliders)
+
+router.get('/subpagesliders', SubOffersController.getAllSubSliders)
 
 //Category 
 router.post('/category', CategoryController.getCategory)

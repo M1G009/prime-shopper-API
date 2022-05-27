@@ -2,6 +2,7 @@ const CategoriesController = require('../controllers/Admin/CategoriesController'
 const CourierController = require('../controllers/Admin/Courier')
 const FaqController = require('../controllers/Faq')
 const HomeOffersController = require('../controllers/HomeOffersController')
+const SubOffersController = require('../controllers/SubOffersController')
 
 const router = new express.Router();
 
@@ -27,6 +28,17 @@ router.post('/deleteTopSelectedBrandSlider', HomeOffersController.deleteTopSelec
 router.post('/deleteBestSellerSlider', HomeOffersController.deleteBestSellerSlider)
 router.post('/deleteBestSellingProductSlider', HomeOffersController.deleteBestSellingProductSlider)
 router.post('/deleteNewArrivalSlider', HomeOffersController.deleteNewArrivalSlider)
+
+//Sub Page Sliders API
+router.post('/updateNewArrivalOffers', IMAGE_STORAGE.single('image'), SubOffersController.updatenewArrivalSubPageSlider)
+router.post('/updateBestSeller1Offers', IMAGE_STORAGE.single('image'), SubOffersController.updateSubBestSeller1Slider)
+router.post('/updateBestSeller2Offers', IMAGE_STORAGE.single('image'), SubOffersController.updateSubBestSeller2Slider)
+
+//Sub Page Sliders API
+router.post('/deleteNewArrivalOffers', IMAGE_STORAGE.single('image'), SubOffersController.deletenewArrivalSubPageSlider)
+router.post('/deleteBestSeller1Offers', IMAGE_STORAGE.single('image'), SubOffersController.deleteSubBestSeller1Slider)
+router.post('/deleteBestSeller2Offers', IMAGE_STORAGE.single('image'), SubOffersController.deleteSubBestSeller2Slider)
+
 
 // Categories
 router.get('/categories', CategoriesController.getCategories)

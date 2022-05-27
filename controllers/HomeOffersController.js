@@ -5,6 +5,8 @@ const bestSellerSlider = require("../models/home/bestSellerSlider");
 const bestSellingProductSlider = require("../models/home/bestSellingProductSlider");
 const newArrivalSlider = require("../models/home/newArrivalSlider");
 
+const newArrivalSubPageSlider = require("../models/sub/newArrivalSubPage");
+
 exports.getAllSliders = async (req, res) => {
   try {
     let allSlidersData = {};
@@ -295,7 +297,9 @@ exports.deleteWelcomeOffers = async (req, res) => {
     if (!req.body.id) {
       throw new Error("Please provide valid Id");
     }
-    const welcomeOffersData = await welcomeOffers.findByIdAndDelete(req.body.id)
+    const welcomeOffersData = await welcomeOffers.findByIdAndDelete(
+      req.body.id
+    );
     res.status(200).json({
       status: "success",
       data: welcomeOffersData,
@@ -310,7 +314,9 @@ exports.deleteBigOfferSlider = async (req, res) => {
     if (!req.body.id) {
       throw new Error("Please provide valid Id");
     }
-    const bigOfferSliderData = await bigOfferSlider.findByIdAndDelete(req.body.id)
+    const bigOfferSliderData = await bigOfferSlider.findByIdAndDelete(
+      req.body.id
+    );
     res.status(200).json({
       status: "success",
       data: bigOfferSliderData,
@@ -325,7 +331,8 @@ exports.deleteTopSelectedBrandSlider = async (req, res) => {
     if (!req.body.id) {
       throw new Error("Please provide valid Id");
     }
-    const topSelectedBrandSliderData = await topSelectedBrandSlider.findByIdAndDelete(req.body.id)
+    const topSelectedBrandSliderData =
+      await topSelectedBrandSlider.findByIdAndDelete(req.body.id);
     res.status(200).json({
       status: "success",
       data: topSelectedBrandSliderData,
@@ -340,7 +347,9 @@ exports.deleteBestSellerSlider = async (req, res) => {
     if (!req.body.id) {
       throw new Error("Please provide valid Id");
     }
-    const bestSellerSliderData = await bestSellerSlider.findByIdAndDelete(req.body.id)
+    const bestSellerSliderData = await bestSellerSlider.findByIdAndDelete(
+      req.body.id
+    );
     res.status(200).json({
       status: "success",
       data: bestSellerSliderData,
@@ -355,7 +364,8 @@ exports.deleteBestSellingProductSlider = async (req, res) => {
     if (!req.body.id) {
       throw new Error("Please provide valid Id");
     }
-    const bestSellingProductSliderData = await bestSellingProductSlider.findByIdAndDelete(req.body.id)
+    const bestSellingProductSliderData =
+      await bestSellingProductSlider.findByIdAndDelete(req.body.id);
     res.status(200).json({
       status: "success",
       data: bestSellingProductSliderData,
@@ -370,7 +380,9 @@ exports.deleteNewArrivalSlider = async (req, res) => {
     if (!req.body.id) {
       throw new Error("Please provide valid Id");
     }
-    const newArrivalSliderData = await newArrivalSlider.findByIdAndDelete(req.body.id)
+    const newArrivalSliderData = await newArrivalSlider.findByIdAndDelete(
+      req.body.id
+    );
     res.status(200).json({
       status: "success",
       data: newArrivalSliderData,
@@ -379,4 +391,3 @@ exports.deleteNewArrivalSlider = async (req, res) => {
     res.status(404).json({ message: error.message });
   }
 };
-
