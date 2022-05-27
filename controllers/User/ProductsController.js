@@ -1,4 +1,6 @@
-const CartModal = require('../../models/schemas/CartSchema')
+const CartModal = require("../../models/schemas/CartSchema");
+const FavouriteModal = require("../../models/schemas/FavoriteSchema");
+const ProductsModal = require("../../models/schemas/ProductsSchema");
 
 exports.getProducts = async (req, res) => {
   try {
@@ -53,7 +55,7 @@ exports.getProducts = async (req, res) => {
 
     _.res(res, products, 200);
   } catch (error) {
-    res.status(404).json({message: error.message});
+    res.status(404).json({ message: error.message });
   }
 };
 
@@ -85,7 +87,7 @@ exports.getProduct = async (req, res) => {
 
     _.res(res, product, 200);
   } catch (error) {
-    res.status(404).json({message: error.message});
+    res.status(404).json({ message: error.message });
   }
 };
 
@@ -124,12 +126,12 @@ exports.addToCart = async (req, res) => {
       delete req.body.variations;
       delete req.body.increment;
       const cart = await Model._findOne(_Cart, conditions, {}, false);
-      let quantity = cart['quantity'] + 1;
-      var updatedCart = await CartModal.findByIdAndUpdate(cart._id, {quantity})
+      let quantity = cart["quantity"] + 1;
+      var updatedCart = await CartModal.findByIdAndUpdate(cart._id, {
+        quantity,
+      });
       _.res(res, updatedCart, 200);
-
     } else {
-
       delete req.body.product;
       delete req.body.variations;
       delete req.body.increment;
@@ -157,7 +159,7 @@ exports.addToCart = async (req, res) => {
       _.res(res, updatedCart, 200);
     }
   } catch (error) {
-    res.status(404).json({message: error.message});
+    res.status(404).json({ message: error.message });
   }
 };
 
@@ -194,9 +196,9 @@ exports.cart = async (req, res) => {
     const cart = await Model._find(_Cart, conditions, options);
     if (!cart) throw new Error("Cart Is Empty");
 
-    _.res(res, {cart, cartIds}, 200);
+    _.res(res, { cart, cartIds }, 200);
   } catch (error) {
-    res.status(404).json({message: error.message});
+    res.status(404).json({ message: error.message });
   }
 };
 
@@ -206,10 +208,10 @@ exports.removeFromCart = async (req, res) => {
       _id: req.body.productId,
       user: req.Auth._id,
     };
-    var updatedCart = await CartModal.findByIdAndDelete(conditions._id)
+    var updatedCart = await CartModal.findByIdAndDelete(conditions._id);
     _.res(res, updatedCart, 200);
   } catch (error) {
-    res.status(404).json({message: error.message});
+    res.status(404).json({ message: error.message });
   }
 };
 
@@ -231,16 +233,20 @@ exports.allProductsRemoveFromCart = async (req, res) => {
 
     _.res(res, "Successfully Empty cart", 200);
   } catch (error) {
-    res.status(404).json({message: error.message});
+    res.status(404).json({ message: error.message });
   }
 };
 
 //Favorites
 exports.addToFavorite = async (req, res) => {
   try {
+    if(!req.body.product || !req.Auth._id || !req.body.variations){
+      throw new Error("Please enter valid fields")
+    }
     const condition = {
-      user: req.Auth._id,
       product: req.body.product,
+      user: req.Auth._id,
+      variation: req.body.variations,
     };
 
     const favorite = await Model._findOne(_Favorites, condition, {}, false);
@@ -249,7 +255,20 @@ exports.addToFavorite = async (req, res) => {
       req.body = _._form(req.body);
       req.body.user = req.Auth._id;
 
-      const addToFavorite = await Model._create(_Favorites, req.body);
+      const addToFavorite = await FavouriteModal.create(condition);
+      await ProductsModal.findOneAndUpdate(
+        {
+          product: req.body.product,
+          user: req.Auth._id,
+          "variations._id": req.body.variations,
+        },
+        {
+          $set: {
+            "variations.$.isFavorite": true,
+          },
+        }
+      );
+
       if (!addToFavorite) throw new Error("Invalid Arguments");
 
       _.res(res, "Added as favorites", 200);
@@ -257,6 +276,18 @@ exports.addToFavorite = async (req, res) => {
       return false;
     } else {
       const favorite = await Model._findOne(_Favorites, condition, {}, false);
+      await ProductsModal.findOneAndUpdate(
+        {
+          product: req.body.product,
+          user: req.Auth._id,
+          "variations._id": req.body.variations,
+        },
+        {
+          $set: {
+            "variations.$.isFavorite": false,
+          },
+        }
+      );
       if (!favorite)
         throw new Error(
           "Oops ! Something went wrong,Maybe seller Removed already."
@@ -266,7 +297,7 @@ exports.addToFavorite = async (req, res) => {
       _.res(res, "Removed from favorites", 200);
     }
   } catch (error) {
-    res.status(404).json({message: error.message});
+    res.status(404).json({ message: error.message });
   }
 };
 
@@ -310,7 +341,7 @@ exports.Favorites = async (req, res) => {
 
     _.res(res, favorites, 200);
   } catch (error) {
-    res.status(404).json({message: error.message});
+    res.status(404).json({ message: error.message });
   }
 };
 
@@ -345,7 +376,7 @@ exports.getProductByCategory = async (req, res) => {
 
     _.res(res, productByCategory, 200);
   } catch (error) {
-    res.status(404).json({message: error.message});
+    res.status(404).json({ message: error.message });
   }
 };
 
@@ -371,6 +402,6 @@ exports.productFormsFiled = async (req, res) => {
 
     _.res(res, productFormsFiled, 200);
   } catch (error) {
-    res.status(404).json({message: error.message});
+    res.status(404).json({ message: error.message });
   }
 };

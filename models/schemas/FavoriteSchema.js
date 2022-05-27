@@ -15,6 +15,11 @@ const FavoriteSchema = new Schema({
         ref : 'Products',
         default: null
     },
+    variation: {
+        type : Schema.Types.ObjectId,
+        ref : 'Products',
+        default: null
+    },
     status: {
         type: String,
         enum: ['Active', 'Inactive'],

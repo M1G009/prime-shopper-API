@@ -189,6 +189,10 @@ const childSchema = new Schema({
     type: String,
     default: ""
   },
+  isFavorite: {
+    type: Boolean,
+    default: false
+  },
 });
 
 const ProductsSchema = new Schema({
