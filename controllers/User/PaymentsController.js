@@ -17,7 +17,6 @@ exports.createPayment = async (req, res) => {
   try {
     let paymentData = req.body.paymentData;
     let userData = req.body.checkoutdata;
-
     if (!paymentData) throw new Error("Stripe token required");
     if (
       !userData ||
@@ -55,10 +54,11 @@ exports.createPayment = async (req, res) => {
       if (err) {
         res.status(404).json({
           status: "fail",
-          message: err
-        })
+          message: err,
+        });
       }
       try {
+       
         let billingAddressData = {
           address_line1: billingData.address_line1
             ? billingData.address_line1
@@ -101,6 +101,7 @@ exports.createPayment = async (req, res) => {
 
           let product = {
             product: el.product.id,
+            variation: el.variations,
             quantity: el.quantity,
             price: el.product.variations.sellingPrice.selling_price_in_india,
           };
@@ -123,14 +124,13 @@ exports.createPayment = async (req, res) => {
           ordersData.push(orderData);
         });
 
-
         const orderObj = await Orders.create(ordersData);
         _.res(res, { payment, orderObj }, 200);
       } catch (err) {
         res.status(404).json({
           status: "fail",
-          message: err.message
-        })
+          message: err.message,
+        });
       }
     });
 
@@ -194,7 +194,7 @@ exports.createPayment = async (req, res) => {
 
     // res.json({ data: req.body });
   } catch (error) {
-    res.status(404).json({message: error.message});
+    res.status(404).json({ message: error.message });
   }
 };
 
@@ -217,7 +217,7 @@ exports.getPayment = async (req, res) => {
 
     _.res(res, payment, 200);
   } catch (error) {
-    res.status(404).json({message: error.message});
+    res.status(404).json({ message: error.message });
   }
 };
 
@@ -257,6 +257,6 @@ exports.getPayments = async (req, res) => {
 
     _.res(res, payments, 200);
   } catch (error) {
-    res.status(404).json({message: error.message});
+    res.status(404).json({ message: error.message });
   }
 };

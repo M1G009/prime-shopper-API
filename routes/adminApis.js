@@ -3,6 +3,7 @@ const CourierController = require('../controllers/Admin/Courier')
 const FaqController = require('../controllers/Faq')
 const HomeOffersController = require('../controllers/HomeOffersController')
 const SubOffersController = require('../controllers/SubOffersController')
+const Admin = require('../controllers/Admin/Admin')
 
 const router = new express.Router();
 
@@ -54,6 +55,10 @@ router.post('/courier/delete', CourierController.deleteCourior)
 
 // FAQ
 router.post('/faq/add', FaqController.addFaq)
+
+// Sellers
+router.get('/sellers', Admin.allSellers)
+router.get('/orders', Admin.allOrders)
 
 
 // async function auth(req, res, next) {

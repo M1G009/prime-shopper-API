@@ -17,12 +17,12 @@ exports.payments = async (req, res) => {
                     select: 'products total discount'
                 }
             },
-            {
-                limit: 12
-            },
-            {
-                skip: req.body.skip ? req.body.skip : 0
-            }
+            // {
+            //     limit: 12
+            // },
+            // {
+            //     skip: req.body.skip ? req.body.skip : 0
+            // }
         ]
         if (req.body.sort && req.body.sort !== '') {
             Object.keys(req.body.sort).map(k => {

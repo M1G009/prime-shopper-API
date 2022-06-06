@@ -28,6 +28,11 @@ exports.getOrders = async (req, res) => {
                     path: 'courier.id',
                 }
             },
+            {
+                populate: {
+                    path: 'user',
+                }
+            },
             // {
             //     limit: 12,
             // },

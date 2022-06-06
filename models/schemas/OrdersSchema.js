@@ -12,6 +12,7 @@ const OrdersSchema = new Schema({
             ref: 'Products',
             required: true
         },
+        variation: String,
         quantity: {
             type: Number,
             default: 1
