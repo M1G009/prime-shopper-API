@@ -199,12 +199,12 @@ const ProductsSchema = new Schema({
   category: {
     type: Schema.Types.ObjectId,
     ref: "AllCategories",
-    require: true,
+    required: [true, "Category is require"],
   },
   parentId: {
     type: Schema.Types.ObjectId,
     ref: "AllCategories",
-    require: true,
+    required: [true, "Parrent category is require"],
   },
   seller: {
     type: Schema.Types.ObjectId,

@@ -1,6 +1,5 @@
 exports.register = async (req, res) => {
     try {
-        // console.log(req.body);
         req.body = _._form(req.body)
         var required = ["name", "email", "password"]
         var validate = _._checkFields(req.body, required)
@@ -47,7 +46,6 @@ exports.updateProfile = async (req, res) => {
         }
 
         const updateProfile = await Model._findOne(_Users, condition, {}, false)
-        console.log(updateProfile);
         if (!updateProfile) throw new Error('Invalid Argument')
 
         const updateFields = Object.keys(req.body);
@@ -84,7 +82,6 @@ exports.getProfile = async (req, res) => {
 exports.changePassword = async (req, res) => {
     try {
         req.body = _._form(req.body);
-        console.log(req.body);
         if (req.body.oldPassword && req.body.oldPassword != '') {
             const condition = {
                 _id: req.Auth._id,

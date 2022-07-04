@@ -10,7 +10,6 @@ var xlsx = require("xlsx");
 exports.doAdd = async (req, res) => {
   try {
     req.body = _._form(req.body);
-
     let productdata = req.body;
     let AllFiles = req.files;
 
@@ -185,9 +184,8 @@ exports.doAdd = async (req, res) => {
         },
       ],
     };
-
     if (productdata.title) {
-      productdata.variations[0].slug = slugify(productdata.title, {
+      newProduct.variations[0].slug = slugify(productdata.title, {
         replacement: "-",
         remove: undefined,
         lower: true,
@@ -200,138 +198,143 @@ exports.doAdd = async (req, res) => {
     if (
       productdata.price_in_india &&
       productdata.selling_price_in_india &&
-      productdata.price_in_india >= productdata.selling_price_in_india
+      parseInt(productdata.price_in_india) >= parseInt(productdata.selling_price_in_india)
     ) {
-      productdata.variations[0].price.price_in_india =
+      newProduct.variations[0].price.price_in_india =
         productdata.price_in_india * 1;
-      productdata.variations[0].price.selling_price_in_india =
+      newProduct.variations[0].sellingPrice.selling_price_in_india =
         productdata.selling_price_in_india * 1;
-      productdata.variations[0].price.discount_price_in_india =
-        (productdata.selling_price_in_india / productdata.price_in_india) * 100;
+      newProduct.variations[0].discount.discount_price_in_india =
+        100 - Math.round((productdata.selling_price_in_india / productdata.price_in_india) * 100);
     }
 
     if (
       productdata.price_in_india &&
       productdata.selling_price_in_unitedkingdom &&
-      productdata.price_in_unitedkingdom >=
-        productdata.selling_price_in_unitedkingdom
+      parseInt(productdata.price_in_unitedkingdom) >=
+      parseInt(productdata.selling_price_in_unitedkingdom)
     ) {
-      productdata.variations[0].price.price_in_unitedkingdom =
+      newProduct.variations[0].price.price_in_unitedkingdom =
         productdata.price_in_unitedkingdom * 1;
-      productdata.variations[0].price.selling_price_in_unitedkingdom =
+      newProduct.variations[0].sellingPrice.selling_price_in_unitedkingdom =
         productdata.selling_price_in_unitedkingdom * 1;
-      productdata.variations[0].price.discount_price_in_unitedkingdom =
-        (productdata.selling_price_in_unitedkingdom /
+      newProduct.variations[0].discount.discount_price_in_unitedkingdom =
+        100 - ((productdata.selling_price_in_unitedkingdom /
           productdata.price_in_unitedkingdom) *
-        100;
+          100);
     }
     if (
       productdata.price_in_france &&
       productdata.selling_price_in_france &&
-      productdata.price_in_france >= productdata.selling_price_in_france
+      parseInt(productdata.price_in_france) >= parseInt(productdata.selling_price_in_france)
     ) {
-      productdata.variations[0].price.price_in_france =
+      newProduct.variations[0].price.price_in_france =
         productdata.price_in_france * 1;
-      productdata.variations[0].price.selling_price_in_france =
+      newProduct.variations[0].sellingPrice.selling_price_in_france =
         productdata.selling_price_in_france * 1;
-      productdata.variations[0].price.discount_price_in_france =
-        (productdata.selling_price_in_france / productdata.price_in_france) *
-        100;
+      newProduct.variations[0].discount.discount_price_in_france =
+        100 - ((productdata.selling_price_in_france / productdata.price_in_france) *
+          100);
     }
 
     if (
       productdata.price_in_germany &&
       productdata.selling_price_in_germany &&
-      productdata.price_in_germany >= productdata.selling_price_in_germany
+      parseInt(productdata.price_in_germany) >= parseInt(productdata.selling_price_in_germany)
     ) {
-      productdata.variations[0].price.price_in_germany =
+      newProduct.variations[0].price.price_in_germany =
         productdata.price_in_germany * 1;
-      productdata.variations[0].price.selling_price_in_germany =
+      newProduct.variations[0].sellingPrice.selling_price_in_germany =
         productdata.selling_price_in_germany * 1;
-      productdata.variations[0].price.discount_price_in_germany =
-        (productdata.selling_price_in_germany / productdata.price_in_germany) *
-        100;
+      newProduct.variations[0].discount.discount_price_in_germany =
+        100 - ((productdata.selling_price_in_germany / productdata.price_in_germany) *
+          100);
     }
 
     if (
       productdata.price_in_netherland &&
       productdata.selling_price_in_netherland &&
-      productdata.price_in_netherland >= productdata.selling_price_in_netherland
+      parseInt(productdata.price_in_netherland) >= parseInt(productdata.selling_price_in_netherland)
     ) {
-      productdata.variations[0].price.price_in_netherland =
+      newProduct.variations[0].price.price_in_netherland =
         productdata.price_in_netherland * 1;
-      productdata.variations[0].price.selling_price_in_netherland =
+      newProduct.variations[0].sellingPrice.selling_price_in_netherland =
         productdata.selling_price_in_netherland * 1;
-      productdata.variations[0].price.discount_price_in_netherland =
-        (productdata.selling_price_in_netherland /
+      newProduct.variations[0].discount.discount_price_in_netherland =
+        100 - ((productdata.selling_price_in_netherland /
           productdata.price_in_netherland) *
-        100;
+          100);
     }
 
     if (
       productdata.price_in_switzerland &&
       productdata.selling_price_in_switzerland &&
-      productdata.price_in_switzerland >=
-        productdata.selling_price_in_switzerland
+      parseInt(productdata.price_in_switzerland) >=
+      parseInt(productdata.selling_price_in_switzerland)
     ) {
-      productdata.variations[0].price.price_in_switzerland =
+      newProduct.variations[0].price.price_in_switzerland =
         productdata.price_in_switzerland * 1;
-      productdata.variations[0].price.selling_price_in_switzerland =
+      newProduct.variations[0].sellingPrice.selling_price_in_switzerland =
         productdata.selling_price_in_switzerland * 1;
-      productdata.variations[0].price.discount_price_in_switzerland =
-        (productdata.selling_price_in_switzerland /
+      newProduct.variations[0].discount.discount_price_in_switzerland =
+        100 - ((productdata.selling_price_in_switzerland /
           productdata.price_in_switzerland) *
-        100;
+          100);
     }
 
     if (
       productdata.price_in_italy &&
       productdata.selling_price_in_italy &&
-      productdata.price_in_italy >= productdata.selling_price_in_italy
+      parseInt(productdata.price_in_italy) >= parseInt(productdata.selling_price_in_italy)
     ) {
-      productdata.variations[0].price.price_in_italy =
+      newProduct.variations[0].price.price_in_italy =
         productdata.price_in_italy * 1;
-      productdata.variations[0].price.selling_price_in_italy =
+      newProduct.variations[0].sellingPrice.selling_price_in_italy =
         productdata.selling_price_in_italy * 1;
-      productdata.variations[0].price.discount_price_in_italy =
-        (productdata.selling_price_in_italy / productdata.price_in_italy) * 100;
+      newProduct.variations[0].discount.discount_price_in_italy =
+        100 - ((productdata.selling_price_in_italy / productdata.price_in_italy) * 100);
     }
 
     if (
       productdata.price_in_canada &&
       productdata.selling_price_in_canada &&
-      productdata.price_in_canada >= productdata.selling_price_in_canada
+      parseInt(productdata.price_in_canada) >= parseInt(productdata.selling_price_in_canada)
     ) {
-      productdata.variations[0].price.price_in_canada =
+      newProduct.variations[0].price.price_in_canada =
         productdata.price_in_canada * 1;
-      productdata.variations[0].price.selling_price_in_canada =
+      newProduct.variations[0].sellingPrice.selling_price_in_canada =
         productdata.selling_price_in_canada * 1;
-      productdata.variations[0].price.discount_price_in_canada =
-        (productdata.selling_price_in_canada / productdata.price_in_canada) *
-        100;
+      newProduct.variations[0].discount.discount_price_in_canada =
+        100 - ((productdata.selling_price_in_canada / productdata.price_in_canada) *
+          100);
     }
 
     if (
       productdata.price_in_unitedstate &&
       productdata.selling_price_in_unitedstate &&
-      productdata.price_in_unitedstate >=
-        productdata.selling_price_in_unitedstate
+      parseInt(productdata.price_in_unitedstate) >=
+      parseInt(productdata.selling_price_in_unitedstate)
     ) {
-      productdata.variations[0].price.price_in_unitedstate =
+      newProduct.variations[0].price.price_in_unitedstate =
         productdata.price_in_unitedstate * 1;
-      productdata.variations[0].price.selling_price_in_unitedstate =
+      newProduct.variations[0].sellingPrice.selling_price_in_unitedstate =
         productdata.selling_price_in_unitedstate * 1;
-      productdata.variations[0].price.discount_price_in_unitedstate =
-        (productdata.selling_price_in_unitedstate /
+      newProduct.variations[0].discount.discount_price_in_unitedstate =
+        100 - ((productdata.selling_price_in_unitedstate /
           productdata.price_in_unitedstate) *
-        100;
+          100);
     }
 
-    let addProduct = await Product.create(newProduct);
+    var new_product = new Product(newProduct)
+    await new_product.save()
+    // let new_product = await Product.create(newProduct);
+    // console.log("new_product::", new_product);
 
-    _.res(res, addProduct, 200);
+
+    _.res(res, new_product, 201);
   } catch (error) {
-    res.status(404).json({message: error.message});
+    console.log("error::", error);
+    res.status(404).json({ message: error.message });
   }
 };
 
@@ -688,7 +691,7 @@ exports.doAddCSV = async (req, res) => {
             100 -
             Math.round(
               (el.selling_price_in_unitedkingdom / el.price_in_unitedkingdom) *
-                100
+              100
             );
         }
         if (el.price_in_france && el.selling_price_in_france) {
@@ -987,7 +990,7 @@ exports.doAddCSV = async (req, res) => {
             100 -
             Math.round(
               (el.selling_price_in_unitedkingdom / el.price_in_unitedkingdom) *
-                100
+              100
             );
         }
         if (el.price_in_france && el.selling_price_in_france) {
@@ -1089,6 +1092,9 @@ exports.doUpdate = async (req, res) => {
 
     let productdata = req.body;
     let AllFiles = req.files;
+
+    console.log("Hello::", productdata._id);
+    let updateVarient = ''
     if (productdata._id) {
       let checkProduct = await Product.findById(productdata._id).clone();
 
@@ -1110,8 +1116,7 @@ exports.doUpdate = async (req, res) => {
       updateVarient.productStatus = productdata.productStatus;
       updateVarient.feed_product_type = productdata.feed_product_type;
       updateVarient.external_product_id = productdata.external_product_id;
-      updateVarient.external_product_id_type =
-        productdata.external_product_id_type;
+      updateVarient.external_product_id_type = productdata.external_product_id_type;
       updateVarient.part_number = productdata.part_number;
       updateVarient.bullet_point = productdata.bullet_point;
       updateVarient.max_shelf_life = productdata.max_shelf_life;
@@ -1201,133 +1206,131 @@ exports.doUpdate = async (req, res) => {
       if (
         productdata.price_in_india &&
         productdata.selling_price_in_india &&
-        productdata.price_in_india >= productdata.selling_price_in_india
+        parseInt(productdata.price_in_india) >= parseInt(productdata.selling_price_in_india)
       ) {
         updateVarient.price.price_in_india = productdata.price_in_india * 1;
         updateVarient.sellingPrice.selling_price_in_india =
           productdata.selling_price_in_india * 1;
         updateVarient.discount.discount_price_in_india =
-          (productdata.selling_price_in_india / productdata.price_in_india) *
-          100;
+          100 - Math.round((productdata.selling_price_in_india / productdata.price_in_india) *
+            100);
       }
 
       if (
         productdata.price_in_unitedkingdom &&
         productdata.selling_price_in_unitedkingdom &&
-        productdata.price_in_unitedkingdom != null &&
-        productdata.selling_price_in_unitedkingdom != null &&
-        productdata.price_in_unitedkingdom >=
-          productdata.selling_price_in_unitedkingdom
+        parseInt(productdata.price_in_unitedkingdom) >=
+        parseInt(productdata.selling_price_in_unitedkingdom)
       ) {
         updateVarient.price.price_in_unitedkingdom =
           productdata.price_in_unitedkingdom * 1;
         updateVarient.sellingPrice.selling_price_in_unitedkingdom =
           productdata.selling_price_in_unitedkingdom * 1;
         updateVarient.discount.discount_price_in_unitedkingdom =
-          (productdata.selling_price_in_unitedkingdom /
+          100 - Math.round((productdata.selling_price_in_unitedkingdom /
             productdata.price_in_unitedkingdom) *
-          100;
+            100);
       }
 
       if (
         productdata.price_in_france &&
         productdata.selling_price_in_france &&
-        productdata.price_in_france >= productdata.selling_price_in_france
+        parseInt(productdata.price_in_france) >= parseInt(productdata.selling_price_in_france)
       ) {
         updateVarient.price.price_in_france = productdata.price_in_france * 1;
         updateVarient.sellingPrice.selling_price_in_france =
           productdata.selling_price_in_france * 1;
         updateVarient.discount.discount_price_in_france =
-          (productdata.selling_price_in_france / productdata.price_in_france) *
-          100;
+          100 - Math.round((productdata.selling_price_in_france / productdata.price_in_france) *
+            100);
       }
 
       if (
         productdata.price_in_germany &&
         productdata.selling_price_in_germany &&
-        productdata.price_in_germany >= productdata.selling_price_in_germany
+        parseInt(productdata.price_in_germany) >= parseInt(productdata.selling_price_in_germany)
       ) {
         updateVarient.price.price_in_germany = productdata.price_in_germany * 1;
         updateVarient.sellingPrice.selling_price_in_germany =
           productdata.selling_price_in_germany * 1;
         updateVarient.discount.discount_price_in_germany =
-          (productdata.selling_price_in_germany /
+          100 - Math.round((productdata.selling_price_in_germany /
             productdata.price_in_germany) *
-          100;
+            100);
       }
 
       if (
         productdata.price_in_netherland &&
         productdata.selling_price_in_netherland &&
-        productdata.price_in_netherland >=
-          productdata.selling_price_in_netherland
+        parseInt(productdata.price_in_netherland) >=
+        parseInt(productdata.selling_price_in_netherland)
       ) {
         updateVarient.price.price_in_netherland =
           productdata.price_in_netherland * 1;
         updateVarient.sellingPrice.selling_price_in_netherland =
           productdata.selling_price_in_netherland * 1;
         updateVarient.discount.discount_price_in_netherland =
-          (productdata.selling_price_in_netherland /
+          100 - Math.round((productdata.selling_price_in_netherland /
             productdata.price_in_netherland) *
-          100;
+            100);
       }
 
       if (
         productdata.price_in_switzerland &&
         productdata.selling_price_in_switzerland &&
-        productdata.price_in_switzerland >=
-          productdata.selling_price_in_switzerland
+        parseInt(productdata.price_in_switzerland) >=
+        parseInt(productdata.selling_price_in_switzerland)
       ) {
         updateVarient.price.price_in_switzerland =
           productdata.price_in_switzerland * 1;
         updateVarient.sellingPrice.selling_price_in_switzerland =
           productdata.selling_price_in_switzerland * 1;
         updateVarient.discount.discount_price_in_switzerland =
-          (productdata.selling_price_in_switzerland /
+          100 - Math.round((productdata.selling_price_in_switzerland /
             productdata.price_in_switzerland) *
-          100;
+            100);
       }
 
       if (
         productdata.price_in_italy &&
         productdata.selling_price_in_italy &&
-        productdata.price_in_italy >= productdata.selling_price_in_italy
+        parseInt(productdata.price_in_italy) >= parseInt(productdata.selling_price_in_italy)
       ) {
         updateVarient.price.price_in_italy = productdata.price_in_italy * 1;
         updateVarient.sellingPrice.selling_price_in_italy =
           productdata.selling_price_in_italy * 1;
         updateVarient.discount.discount_price_in_italy =
-          (productdata.selling_price_in_italy / productdata.price_in_italy) *
-          100;
+          100 - Math.round((productdata.selling_price_in_italy / productdata.price_in_italy) *
+            100);
       }
 
       if (
         productdata.price_in_canada &&
         productdata.selling_price_in_canada &&
-        productdata.price_in_canada >= productdata.selling_price_in_canada
+        parseInt(productdata.price_in_canada) >= parseInt(productdata.selling_price_in_canada)
       ) {
         updateVarient.price.price_in_canada = productdata.price_in_canada * 1;
         updateVarient.sellingPrice.selling_price_in_canada =
           productdata.selling_price_in_canada * 1;
         updateVarient.discount.discount_price_in_canada =
-          (productdata.selling_price_in_canada / productdata.price_in_canada) *
-          100;
+          100 - Math.round((productdata.selling_price_in_canada / productdata.price_in_canada) *
+            100);
       }
 
       if (
         productdata.price_in_unitedstate &&
         productdata.selling_price_in_unitedstate &&
-        productdata.price_in_unitedstate >=
-          productdata.selling_price_in_unitedstate
+        parseInt(productdata.price_in_unitedstate) >=
+        parseInt(productdata.selling_price_in_unitedstate)
       ) {
         updateVarient.price.price_in_unitedstate =
           productdata.price_in_unitedstate * 1;
         updateVarient.sellingPrice.selling_price_in_unitedstate =
           productdata.selling_price_in_unitedstate * 1;
         updateVarient.discount.discount_price_in_unitedstate =
-          (productdata.selling_price_in_unitedstate /
+          100 - Math.round((productdata.selling_price_in_unitedstate /
             productdata.price_in_unitedstate) *
-          100;
+            100);
       }
 
       let allVariations = [...checkProduct.variations];
@@ -1359,16 +1362,21 @@ exports.doUpdate = async (req, res) => {
         updateData.variations2["data"] = val2Array;
       }
 
-      let updatedateArray = await Product.findByIdAndUpdate(productdata._id, {
+      console.log("updateData::", updateData);
+
+      let updateDateObject = await Product.findByIdAndUpdate(productdata._id, {
         ...updateData,
       });
 
-      return _.res(res, { ...updatedateArray }, 200);
+      // let updateDateObject = {}
+
+      return _.res(res, { ...updateDateObject }, 200);
     }
 
     _.res(res, updateVarient, 200);
+    throw new Error('Product Id Not Found')
   } catch (error) {
-    res.status(404).json({message: error.message});
+    res.status(404).json({ message: error.message });
   }
 };
 
@@ -1382,7 +1390,7 @@ exports.getProduct = async (req, res) => {
     const options = [
       {
         populate: {
-          path: "category",
+          path: "parentId",
         },
       },
       {
@@ -1398,11 +1406,12 @@ exports.getProduct = async (req, res) => {
       },
     ];
     const product = await Model._findOne(_Products, condition, options, false);
+
     if (!product) throw new Error("Unable to find product");
 
     _.res(res, product, 200);
   } catch (error) {
-    res.status(404).json({message: error.message});
+    res.status(404).json({ message: error.message });
   }
 };
 
@@ -1437,8 +1446,6 @@ exports.getProducts = async (req, res) => {
           path: "seller",
         },
       },
-      { limit: 12 },
-      { skip: req.body.skip ? req.body.skip : 0 },
     ];
 
     if (req.body.sort && req.body.sort !== "") {
@@ -1471,7 +1478,7 @@ exports.getProducts = async (req, res) => {
 
     _.res(res, product, 200);
   } catch (error) {
-    res.status(404).json({message: error.message});
+    res.status(404).json({ message: error.message });
   }
 };
 
@@ -1491,7 +1498,7 @@ exports.removeProduct = async (req, res) => {
 
     _.res(res, "Product removed successfully", 200);
   } catch (error) {
-    res.status(404).json({message: error.message});
+    res.status(404).json({ message: error.message });
   }
 };
 

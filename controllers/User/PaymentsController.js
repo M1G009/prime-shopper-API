@@ -149,7 +149,6 @@ exports.createPayment = async (req, res) => {
     //     },
     //   })
     //   .then((customer) => {
-    //     // console.log(customer);
     //     return stripe.charges.create({
     //       amount: userData.totalPrice, // Charing Rs 25
     //       description: " ",
@@ -158,11 +157,9 @@ exports.createPayment = async (req, res) => {
     //     });
     //   })
     //   .then((charge) => {
-    //     console.log(charge);
     //     res.send(charge); // If no error occurs
     //   })
     //   .catch((err) => {
-    //     console.log(err);
     //     res.send(err); // If some error occurs
     //   });
 
@@ -188,7 +185,6 @@ exports.createPayment = async (req, res) => {
     //   if(err){
     //     res.send(err)
     //   }
-    //   console.log(order);
     // res.send(order)
     // });
 
@@ -233,13 +229,7 @@ exports.getPayments = async (req, res) => {
           path: "order",
           select: "products subtotal discount total",
         },
-      },
-      {
-        limit: 12,
-      },
-      {
-        skip: req.body.skip ? req.body.skip : 0,
-      },
+      }
     ];
     if (req.body.sort && req.body.sort !== "") {
       Object.keys(req.body.sort).map((k) => {

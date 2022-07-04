@@ -8,7 +8,6 @@ module.exports = {
 
 		for (var i = 0; i < required.length; i++) {
 
-			// console.log(Object.keys(body).length);
 			if (Object.keys(body).indexOf(required[i]) == -1) {
 				return {
 					is_valid: false,
@@ -21,7 +20,6 @@ module.exports = {
 
 		for (var i = 0; i < Object.keys(body).length; i++) {
 			var field = Object.keys(body)[i];
-			// console.log(field);
 			if (body[field] == null) {
 				body[field] = ""
 			}
@@ -98,7 +96,6 @@ module.exports = {
 		return body;
 	},
 	_validateEmail: function (email) {
-		// console.log(email);
 		var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 		return re.test(String(email).toLowerCase());
 	},
@@ -166,7 +163,6 @@ module.exports = {
 	_moveFile: function (oldPath, newPath) {
 		fs.move(oldPath, newPath, function (err) {
 			if (err) return console.error(err)
-			console.log("success!")
 		})
 	}
 }

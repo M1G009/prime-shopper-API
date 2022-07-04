@@ -99,7 +99,6 @@ exports.getOrder = async (req, res) => {
 //Update Order
 exports.updateOrder = async (req, res) => {
     try {
-        // console.log(req.body.orderId, req.body.couriorId, req.body.trackingId);
         if(!req.body.orderId || !req.body.couriorId || !req.body.trackingId){
             throw Error('Please enter valid values')
         }

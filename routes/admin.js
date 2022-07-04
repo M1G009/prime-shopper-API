@@ -16,17 +16,12 @@ function HashPassword() {
   return {
     before: async (request) => {
 
-      console.log('request.payload', request.payload)
-
       if (request.payload.password) {
         if (request.payload.password.length < 40 && request.payload.password.length > 0) {
           request.payload = {
             ...request.payload,
             password: _._hashPass(request.payload.password),
           }
-
-          console.log('request.payload', request.payload)
-
         }
       }
       return request

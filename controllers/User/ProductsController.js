@@ -4,12 +4,13 @@ const ProductsModal = require("../../models/schemas/ProductsSchema");
 
 exports.getProducts = async (req, res) => {
   try {
+
     var condition = {};
 
     const options = [
       {
         populate: {
-          path: "category",
+          path: "parentId",
         },
       },
       {
@@ -26,9 +27,7 @@ exports.getProducts = async (req, res) => {
         populate: {
           path: "seller",
         },
-      },
-      { limit: 12 },
-      { skip: req.body.skip ? req.body.skip : 0 },
+      }
     ];
 
     if (req.body.sort && req.body.sort !== "") {
@@ -42,6 +41,7 @@ exports.getProducts = async (req, res) => {
         }
       });
     }
+
     var search = new RegExp(req.body.search, "gi");
     if (req.body.search) {
       condition[
@@ -50,7 +50,24 @@ exports.getProducts = async (req, res) => {
             this.createdAt.toString().match(${search}) != null;}`;
     }
 
+    if(req.body.categoryId){
+      condition['parentId'] = req.body.categoryId;
+    }
+
+    if(req.body.filterBrands && req.body.filterBrands.length ){
+      condition['brand_name'] = {$in: req.body.filterBrands}
+    }
+
+    if(req.body.filterSellers && req.body.filterSellers.length ){
+      condition['seller'] = {$in: req.body.filterSellers}
+    }
+
+    if(req.body.arrivalTime ){
+      condition['createdAt'] = {$gte: new Date((new Date().getTime() - (req.body.arrivalTime * 24 * 60 * 60 * 1000)))}
+    }
+
     const products = await Model._find(_Products, condition, options, false);
+
     if (!products) throw new Error("Product not found");
 
     _.res(res, products, 200);
@@ -363,13 +380,7 @@ exports.getProductByCategory = async (req, res) => {
           path: "category",
           select: "name",
         },
-      },
-      {
-        skip: req.body.skip ? +req.body.skip : 0,
-      },
-      {
-        limit: 15,
-      },
+      }
     ];
     const productByCategory = await Model._find(_Products, condition, options);
     if (!productByCategory) throw new Error("No Product found");

@@ -5,15 +5,10 @@ exports.doAdd = async (req, res) => {
         var validate = _._checkFields(req.body, required)
         if (validate !== true) throw new Error(validate.message)
         req.body.total = req.body.subtotal - (req.body.subtotal * req.body.discount) / 100
-        console.log("validate", req.body.products);
-        // if (req.body.products) {
-        //     req.body.products = JSON.parse(req.body.products)
-        // }        
 
         req.body.user = req.Auth._id
         req.body.orderNumber = await _._generateToken(8, 'numeric')
         const order = await Model._create(_Order, req.body)
-        console.log("order", order);
         _.res(res, order, 200)
     } catch (error) {
         res.status(404).json({message: error.message})
@@ -28,7 +23,7 @@ exports.Orders = async (req, res) => {
         const options = [
             {
                 populate: {
-                    path: 'products.product',
+                    path: 'product.product',
                     populate: {
                         path: 'category',
                         select: 'name banner type'

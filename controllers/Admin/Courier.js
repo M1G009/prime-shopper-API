@@ -20,7 +20,6 @@ exports.getAllCouriors = async (req, res) => {
 
 exports.addCourior = async (req, res) => {
     try {
-        // console.log(req.body);
         await Couriers.create(req.body);
         let allCouriers = await Couriers.find();
 

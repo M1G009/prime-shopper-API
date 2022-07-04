@@ -229,8 +229,6 @@ exports.removeItem = async (req, res) => {
 
                                 if (err) console.log(err)
 
-                                console.log(doc)
-
                             })
 
                         }
@@ -255,8 +253,6 @@ exports.removeItem = async (req, res) => {
                 tableOptions.cascading[i][keys[0]].deleteMany({ [req.body.base]: removeItem._id }, function (err, doc) {
 
                     if (err) console.log(err)
-
-                    console.log(doc)
 
                 })
 

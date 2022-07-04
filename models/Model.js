@@ -89,7 +89,6 @@ exports.group = (schema, condition = {}, group, sort = { _id: -1 }) => {
 			.sort(sort)
 			.exec((err, data) => {
 				if (err || data.length === 0) {
-					console.log('error', err)
 					resolve([]);
 					return;
 				}
@@ -123,8 +122,6 @@ exports._chatInfo = (schema, condition, user) => {
 }
 
 _filterChat = async (chats, user) => {
-
-	console.log('chats', chats)
 
 	var result = [];
 	for (let i = 0; i < chats.length; i++) {
